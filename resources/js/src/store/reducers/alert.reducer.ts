@@ -1,19 +1,28 @@
-import { actionTypes } from '../actions/alert.action'
+import { createSlice } from '@reduxjs/toolkit';
+import type { AlertModel } from '../../models/AlertModel';
 
-const initialState = {
+const state: AlertModel = {
+  alert: {
     open: true,
     class: 'success',
     time: 3000,
     msg: 'Dados Atualizados'
-}
-
-export default (state = initialState, { type, payload }) => {
-  switch (type) {
-
-  case actionTypes.CHANGE:
-    return { ...state, ...payload }
-
-  default:
-    return state
   }
 }
+
+export const alertSlice = createSlice({
+  name: 'alert',
+  initialState: state.alert,
+  reducers: {
+    open: (state) => {
+      state.open = true;
+    },
+    close: (state) => {
+      state.open = false;
+    },
+  },
+});
+
+export const { open, close } = alertSlice.actions;
+
+export default alertSlice.reducer;

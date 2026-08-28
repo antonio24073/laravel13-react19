@@ -1,7 +1,7 @@
 export interface LoadingModel {
     loading:
     {
-        opened: boolean;
+        open: boolean;
         msg?: string
     }
 }

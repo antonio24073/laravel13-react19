@@ -10,7 +10,7 @@ export default function Loading() {
 
     return (
         <Modal 
-        open={loading.opened}
+        open={loading.open}
         onClose={() => dispatch( close())}
         className="d-flex justify-content-center align-items-center h-100">
             <div className="bg-white d-flex align-items-center rounded-lg p-3 outline-none">

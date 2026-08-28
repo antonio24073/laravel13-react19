@@ -1,22 +1,28 @@
-import { actionTypes } from '../actions/notify.action'
+import { createSlice } from '@reduxjs/toolkit';
+import type { NotifyState } from '../../models/NotifyModel';
 
-const initialState = {
-    open: true,
-    horizontal: 'center',
-    vertical: 'top',
-    class: 'success',
-    time: 3000,
-    msg: "dados atualizados"
+const initialState: NotifyState = {
+  open: true,
+  horizontal: 'center',
+  vertical: 'top',
+  class: 'success',
+  time: 3000,
+  msg: 'dados atualizados',
+};
 
-}
+export const notifySlice = createSlice({
+  name: 'notify',
+  initialState,
+  reducers: {
+    open: (state) => {
+      state.open = true;
+    },
+    close: (state) => {
+      state.open = false;
+    },
+  },
+});
 
-export default (state = initialState, { type, payload }) => {
-  switch (type) {
+export const { open, close, changeNotify } = notifySlice.actions;
 
-  case actionTypes.CHANGE:
-    return { ...state, ...payload }
-
-  default:
-    return state
-  }
-}
+export default notifySlice.reducer;

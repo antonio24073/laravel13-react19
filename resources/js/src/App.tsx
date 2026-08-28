@@ -9,8 +9,7 @@ import { FaBeer } from 'react-icons/fa';
 import BasicList from './components/BasicList'
 import ContainedButtons from './components/ContainedButtons'
 import { Counter } from './view/components/Counter';
-import { Loading } from './view/components';
-// import { Loading, Notify, Alert } from './view/components'
+import { Loading, Notify, Alert } from './view/components'
 // import "./tmp.global.css"
 
 
@@ -43,8 +42,8 @@ return <Provider store={store}>
     <Counter></Counter>
     <TextField id="outlined-basic" label="Outlined" />
     <Loading></Loading>
-    {/* <Alert />
-    <Notify />*/}
+    <Alert />
+    <Notify />
   </ThemeProvider> 
 </Provider>;
 }

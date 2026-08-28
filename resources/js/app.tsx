@@ -1,16 +1,14 @@
+import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client';
 
-function App() {
-    return (
-        <div>
-            <h1>React funcionando!</h1>
-            <p>Laravel 13 + React + Vite</p>
-        </div>
-    );
-}
+import App from './src/App';
 
 const element = document.getElementById('app');
 
 if (element) {
-    createRoot(element).render(<App />);
+    createRoot(element).render(
+        <StrictMode>
+            <App />
+        </StrictMode>
+    );
 }

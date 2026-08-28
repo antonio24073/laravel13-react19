@@ -10,14 +10,29 @@ up:
 rm:
 	- docker compose down
 
+mkdir:
+	- mkdir -p ./data/mariadb
+
 perm:
 	- sudo find . -type d -exec chmod 775 {} \;
 	- sudo find . -type f -exec chmod 664 {} \;
 	- sudo chown -R $$USER:82 .
 	- sudo chmod +x node_modules/.bin/vite
 
+artisan_migrate:
+	- docker compose exec -u 82 lr_app php artisan migrate
+
 npm_i:
 	- docker compose exec -u 82 lr_app npm i
 
 npm_run_dev:
-	- docker compose exec -u 82 lr_app npm run dev
+	docker compose exec -u 82 lr_app npm run dev
+
+npm_run_build:
+	docker compose exec -u 82 lr_app npm run build
+
+npm_run_typecheck:
+	docker compose exec -u 82 lr_app npm run typecheck
+
+vite_clean_cache:
+	docker compose exec -u 82 lr_app rm -rf node_modules/.vite

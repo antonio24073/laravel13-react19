@@ -1,23 +1,81 @@
-FROM php:8.5-fpm-alpine
+FROM php:8.4-fpm-alpine
 
-# Comment this to improve stability on "auto deploy" environments
-RUN apk update && apk upgrade
+# Dependências do sistema
+RUN apk add --no-cache \
+    bash \
+    curl \
+    git \
+    nodejs \
+    npm \
+    unzip \
+    zip \
+    icu \
+    libzip \
+    libpng \
+    libjpeg-turbo \
+    freetype \
+    libwebp \
+    oniguruma
 
-# Install basic dependencies
-RUN apk -u add bash git
+RUN apk add --no-cache --virtual .build-deps \
+    $PHPIZE_DEPS \
+    icu-dev \
+    libzip-dev \
+    libpng-dev \
+    libjpeg-turbo-dev \
+    freetype-dev \
+    libwebp-dev \
+    oniguruma-dev
 
-# Install PHP extensions
-ADD ./.docker/install-php.sh /usr/sbin/install-php.sh
-RUN chmod +x /usr/sbin/install-php.sh
-RUN /usr/sbin/install-php.sh
+# GD
+RUN docker-php-ext-configure gd \
+    --with-freetype \
+    --with-jpeg \
+    --with-webp
 
-# Copy existing application directory contents
+# Extensões PHP
+RUN docker-php-ext-configure gd \
+    --with-freetype \
+    --with-jpeg \
+    --with-webp \
+    && docker-php-ext-install -j$(nproc) \
+        bcmath \
+        gd \
+        intl \
+        mbstring \
+        opcache \
+        pdo_mysql \
+        zip
+
+RUN apk del .build-deps
+
+# Composer
+RUN curl -sS https://getcomposer.org/installer | php \
+    -- \
+    --install-dir=/usr/local/bin \
+    --filename=composer
+
+# Configurações PHP
 COPY ./.docker/*.ini /usr/local/etc/php/conf.d/
+
+# Aplicação
+WORKDIR /var/www/app
+
 COPY . .
 
-# Change current user to www-data
+# Permissões do Laravel
+RUN mkdir -p \
+    storage/framework/cache \
+    storage/framework/sessions \
+    storage/framework/views \
+    storage/logs \
+    bootstrap/cache \
+    && chown -R www-data:www-data \
+        storage \
+        bootstrap/cache
+
 USER www-data
 
-# Expose ports and start php-fpm server
 EXPOSE 9000
+
 CMD ["php-fpm"]

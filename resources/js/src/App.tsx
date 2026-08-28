@@ -1,5 +1,5 @@
 
-import store from './app/store'
+import store from './store/store'
 import { Provider } from 'react-redux'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { blue } from '@mui/material/colors';
@@ -8,7 +8,7 @@ import TextField from '@mui/material/TextField';
 import { FaBeer } from 'react-icons/fa';
 import BasicList from './components/BasicList'
 import ContainedButtons from './components/ContainedButtons'
-import { Counter } from './features/counter/Counter';
+import { Counter } from './view/components/Counter';
 // import { Loading, Notify, Alert } from './view/components'
 // import "./tmp.global.css"
 

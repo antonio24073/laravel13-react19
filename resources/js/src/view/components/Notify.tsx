@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Snackbar, SnackbarContent } from '@mui/material';
 import { makeStyles } from '@mui/material/styles';
 import { green, red } from '@mui/material/colors';
-import { changeNotify } from '../../app/actions/notify.action'
+import { changeNotify } from '../../store/actions/notify.action'
 
 const useStyles = makeStyles({
     success: {

@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Modal, Typography } from '@mui/material'
 import { MdError, MdCheckCircle } from 'react-icons/md'
-import { changeAlert } from '../../app/actions/alert.action'
+import { changeAlert } from '../../store/actions/alert.action'
 
 export default function Alert() {
     const dispatch = useDispatch();

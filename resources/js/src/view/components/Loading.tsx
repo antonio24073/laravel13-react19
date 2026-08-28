@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Typography, Modal, CircularProgress } from '@mui/material'
-import { changeLoading } from '../../app/actions/loading.action'
+import { changeLoading } from '../../store/actions/loading.action'
 
 export default function Loading() {
     const dispatch = useDispatch();

@@ -4,11 +4,12 @@ import { Provider } from 'react-redux'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { blue } from '@mui/material/colors';
 import TextField from '@mui/material/TextField';
-// import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
 import { FaBeer } from 'react-icons/fa';
 import BasicList from './components/BasicList'
 import ContainedButtons from './components/ContainedButtons'
 import { Counter } from './view/components/Counter';
+import { Loading } from './view/components';
 // import { Loading, Notify, Alert } from './view/components'
 // import "./tmp.global.css"
 
@@ -41,8 +42,8 @@ return <Provider store={store}>
     <BasicList></BasicList> */}
     <Counter></Counter>
     <TextField id="outlined-basic" label="Outlined" />
-    {/* <Loading></Loading>
-    <Alert />
+    <Loading></Loading>
+    {/* <Alert />
     <Notify />*/}
   </ThemeProvider> 
 </Provider>;

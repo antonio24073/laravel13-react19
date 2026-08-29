@@ -16,8 +16,13 @@ mkdir:
 perm:
 	- sudo find . -type d -exec chmod 775 {} \;
 	- sudo find . -type f -exec chmod 664 {} \;
-	- sudo chown -R $$USER:82 .
+	- sudo chown -R 82:$$USER .
 	- sudo chmod +x node_modules/.bin/vite
+
+perm_db:
+	- sudo chown -R 999:999 data/mariadb
+	- sudo chmod 750 data/mariadb
+
 
 artisan_migrate:
 	- docker compose exec -u 82 lr_app php artisan migrate

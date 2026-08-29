@@ -35,30 +35,29 @@ const theme = createTheme({
 
 
 const App = () => {
-  return <Routes />
-  // return <Provider store={store}>
-  //   <ThemeProvider theme={theme}>
-  //     <Routes />
-  //     {/* <h1 className="text-danger"> Olá 2</h1> */}
-  //     {/* <FaBeer style={{ fontSize: '60px', color: 'B8860B' }} /> */}
-  //     {/* <ContainedButtons></ContainedButtons>*/}
-  //     {/* <Confirm
-  //       open={true}
-  //       onClose={() => alert('close')}
-  //       onConfirm={() => alert('confirm')}
-  //     /> */}
+  return <Provider store={store}>
+    <ThemeProvider theme={theme}>
+      <Routes />
+      {/* <h1 className="text-danger"> Olá 2</h1> */}
+      {/* <FaBeer style={{ fontSize: '60px', color: 'B8860B' }} /> */}
+      {/* <ContainedButtons></ContainedButtons>*/}
+      {/* <Confirm
+         open={true}
+         onClose={() => alert('close')}
+         onConfirm={() => alert('confirm')}
+       /> */}
 
-  //     {/* <Counter></Counter> */}
-  //     {/* <TextField id="outlined-basic" label="Outlined" /> */}
-  //     {/* <Loading></Loading> */}
-  //     {/* <Alert /> */}
-  //     {/* <Notify />
-  //     <ContainedButtons /> */}
-  //     {/* <AuthButton /> */}
+      {/* <Counter></Counter> */}
+      {/* <TextField id="outlined-basic" label="Outlined" /> */}
+      {/* <Loading></Loading> */}
+      {/* <Alert /> */}
+      {/* <Notify />
+       <ContainedButtons /> */}
+      <AuthButton />
 
-  //   </ThemeProvider>
+    </ThemeProvider>
 
-  // </Provider>;
+  </Provider>;
 }
 
 

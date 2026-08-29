@@ -1,19 +1,19 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { Modal, Typography } from '@mui/material'
 import { MdError, MdCheckCircle } from 'react-icons/md'
-import type { AlertModel } from '../../models/AlertModel'
-import { open, close } from '../../store/reducers/alert.reducer'
+import type { AlertModel } from '../../models/alert.types'
+import alertAction from '../../store/actions/alert.action'
 
 export default function Alert() {
     const dispatch = useDispatch();
-    const alert = useSelector( (state: AlertModel) => state.alert)
+    const alert = useSelector((state: AlertModel) => state.alert)
 
-    if(alert.open){
-        setTimeout(() => dispatch( close() ), alert.time);
+    if (alert.open) {
+        setTimeout(() => dispatch(alertAction.close()), alert.time);
     }
     return (
         <Modal
-            open={alert.open}
+            open={alert.open || false}
             // onClose={() => dispatch(open())}
             className="d-flex flex-column align-items-center justify-content-center h-100"
         >

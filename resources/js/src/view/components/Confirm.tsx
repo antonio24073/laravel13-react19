@@ -1,6 +1,6 @@
 import { Dialog, DialogActions, DialogTitle, Button } from '@mui/material'
 
-export default function Confirm(props) {
+export default function Confirm(props: any) {
   const { open, title, onClose, onConfirm } = props;
   return (
     <Dialog

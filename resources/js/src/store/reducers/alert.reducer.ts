@@ -1,20 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
-import type { AlertModel } from '../../models/AlertModel';
+import type { AlertState } from '../../models/alert.types';
 
-const state: AlertModel = {
-  alert: {
+const state: AlertState = {
     open: true,
     class: 'success',
     time: 3000,
     msg: 'Dados Atualizados'
-  }
 }
 
 export const alertSlice = createSlice({
   name: 'alert',
-  initialState: state.alert,
+  initialState: state,
   reducers: {
-    open: (state) => {
+    open: (state, action) => {
       state.open = true;
     },
     close: (state) => {
@@ -25,4 +23,6 @@ export const alertSlice = createSlice({
 
 export const { open, close } = alertSlice.actions;
 
+
 export default alertSlice.reducer;
+

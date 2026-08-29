@@ -1,16 +1,13 @@
 
-import store from './store/store'
+import { store } from './store'
 import { Provider } from 'react-redux'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { blue } from '@mui/material/colors';
-import TextField from '@mui/material/TextField';
+// import TextField from '@mui/material/TextField';
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { FaBeer } from 'react-icons/fa';
-import BasicList from './components/BasicList'
-import ContainedButtons from './components/ContainedButtons'
-import { Counter } from './view/components/Counter';
-import { Loading, Notify, Alert, Confirm } from './view/components'
-// import "./tmp.global.css"
+// import { FaBeer } from 'react-icons/fa';
+// import { Counter } from './view/components/Counter';
+import { Alert, AuthButton, Confirm, ContainedButtons, Counter, Loading, Notify } from './view/components'
 
 
 const theme = createTheme({
@@ -37,24 +34,28 @@ const theme = createTheme({
 
 
 const App = () => {
+
   return <Provider store={store}>
     <ThemeProvider theme={theme}>
       <h1 className="text-danger"> Olá 2</h1>
       {/* <FaBeer style={{ fontSize: '60px', color: 'B8860B' }} /> */}
-      {/* <ContainedButtons></ContainedButtons>
-    <BasicList></BasicList> */}
-      <Confirm
+      {/* <ContainedButtons></ContainedButtons>*/}
+      {/* <Confirm
         open={true}
         onClose={() => alert('close')}
         onConfirm={() => alert('confirm')}
-      />
+      /> */}
 
-      <Counter></Counter>
-      <TextField id="outlined-basic" label="Outlined" />
-      <Loading></Loading>
-      <Alert />
-      <Notify />
+      {/* <Counter></Counter> */}
+      {/* <TextField id="outlined-basic" label="Outlined" /> */}
+      {/* <Loading></Loading> */}
+      {/* <Alert /> */}
+      {/* <Notify />
+      <ContainedButtons /> */}
+      <AuthButton />
+
     </ThemeProvider>
+
   </Provider>;
 }
 

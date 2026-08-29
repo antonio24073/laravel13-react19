@@ -1,8 +1,8 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { Snackbar, SnackbarContent } from '@mui/material';
 import { green, red } from '@mui/material/colors';
-import { close } from '../../store/reducers/notify.reducer';
-import type { NotifyModel } from '../../models/NotifyModel';
+import notifyAction from '../../store/actions/notify.action';
+import type { NotifyModel } from '../../models/notify.types';
 
 export default function Notify() {
     const dispatch = useDispatch();
@@ -16,7 +16,7 @@ export default function Notify() {
             }}
             open={notify.open}
             autoHideDuration={notify.time}
-            onClose={() => dispatch(close())}
+            onClose={() => dispatch(notifyAction.close())}
         >
             <SnackbarContent
                 sx={{

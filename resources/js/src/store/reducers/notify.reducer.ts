@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
-import type { NotifyState } from '../../models/NotifyModel';
+import type { NotifyState } from '../../models/notify.types';
 
 const initialState: NotifyState = {
-  open: true,
+  open: false,
   horizontal: 'center',
   vertical: 'top',
   class: 'success',
@@ -14,8 +14,10 @@ export const notifySlice = createSlice({
   name: 'notify',
   initialState,
   reducers: {
-    open: (state) => {
+    open: (state, action) => {
       state.open = true;
+      state.msg = action.payload.msg;
+      state.class = action.payload.class;
     },
     close: (state) => {
       state.open = false;
@@ -23,6 +25,6 @@ export const notifySlice = createSlice({
   },
 });
 
-export const { open, close, changeNotify } = notifySlice.actions;
+export const { open, close } = notifySlice.actions;
 
 export default notifySlice.reducer;

@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import type { LoadingModel } from '../../models/LoadingModel';
+import type { LoadingModel } from '../../models/loading.types';
 
 const state: LoadingModel = {
   loading: {

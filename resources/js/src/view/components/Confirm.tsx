@@ -8,7 +8,7 @@ export default function Confirm(props) {
      onClose={() => onClose()}
      >
         <DialogTitle sx={{ typography: 'inherit' }}>
-            <h6>{ title || 'Tem certeza que deseja excluir?' }</h6>
+            <p>{ title || 'Tem certeza que deseja excluir?' }</p>
         </DialogTitle>
 
         <DialogActions className="justify-content-center mb-2">

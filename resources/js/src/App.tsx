@@ -9,7 +9,7 @@ import { FaBeer } from 'react-icons/fa';
 import BasicList from './components/BasicList'
 import ContainedButtons from './components/ContainedButtons'
 import { Counter } from './view/components/Counter';
-import { Loading, Notify, Alert } from './view/components'
+import { Loading, Notify, Alert, Confirm } from './view/components'
 // import "./tmp.global.css"
 
 
@@ -19,33 +19,39 @@ const theme = createTheme({
       main: blue[500],
     }
   },
-  // props: {
-  //   MuiTextField: {
-  //     variant: 'outlined',
-  //     fullWidth: true,
-  //   },
-  //   MuiSelect: {
-  //     variant: 'outlined',
-  //     fullWidth: true,
-  //   },
-  // },
+  props: {
+    MuiTextField: {
+      variant: 'outlined',
+      fullWidth: true,
+    },
+    MuiSelect: {
+      variant: 'outlined',
+      fullWidth: true,
+    },
+  },
 })
 
 
 const App = () => {
-return <Provider store={store}>
-  <ThemeProvider theme={theme}>
-    <h1 className="text-danger"> Olá 2</h1>
-    {/* <FaBeer style={{ fontSize: '60px', color: 'B8860B' }} /> */}
-    {/* <ContainedButtons></ContainedButtons>
+  return <Provider store={store}>
+    <ThemeProvider theme={theme}>
+      <h1 className="text-danger"> Olá 2</h1>
+      {/* <FaBeer style={{ fontSize: '60px', color: 'B8860B' }} /> */}
+      {/* <ContainedButtons></ContainedButtons>
     <BasicList></BasicList> */}
-    <Counter></Counter>
-    <TextField id="outlined-basic" label="Outlined" />
-    <Loading></Loading>
-    <Alert />
-    <Notify />
-  </ThemeProvider> 
-</Provider>;
+      <Confirm
+        open={true}
+        onClose={() => alert('close')}
+        onConfirm={() => alert('confirm')}
+      />
+
+      <Counter></Counter>
+      <TextField id="outlined-basic" label="Outlined" />
+      <Loading></Loading>
+      <Alert />
+      <Notify />
+    </ThemeProvider>
+  </Provider>;
 }
 
 

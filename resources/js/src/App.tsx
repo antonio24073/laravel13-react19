@@ -19,14 +19,18 @@ const theme = createTheme({
       main: blue[500],
     }
   },
-  props: {
+  components: {
     MuiTextField: {
-      variant: 'outlined',
-      fullWidth: true,
+      defaultProps: {
+        variant: 'outlined',
+        fullWidth: true,
+      }
     },
     MuiSelect: {
-      variant: 'outlined',
-      fullWidth: true,
+      defaultProps: {
+        variant: 'outlined',
+        fullWidth: true,
+      }
     },
   },
 })

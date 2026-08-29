@@ -24,7 +24,7 @@ export default function Alert() {
                 {(alert.class == 'error') &&
                     <MdError style={{ fontSize: '2.5rem' }} className="mr-3 text-danger" />
                 }
-                <Typography className="font-weight-bold" variant="subtitle2">{alert.msg}</Typography>
+                <Typography className="font-weight-bold ms-2" variant="subtitle2">{alert.msg}</Typography>
             </div>
         </Modal>
     )

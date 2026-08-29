@@ -15,7 +15,7 @@ export default function Loading() {
         className="d-flex justify-content-center align-items-center h-100">
             <div className="bg-white d-flex align-items-center rounded-lg p-3 outline-none">
                 <CircularProgress size={20}></CircularProgress>
-                <Typography variant="subtitle1">{loading.msg}</Typography>
+                <Typography className="ms-2" variant="subtitle1">{loading.msg}</Typography>
             </div>
         </Modal>
     )

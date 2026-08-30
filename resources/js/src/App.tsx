@@ -7,7 +7,7 @@ import { blue } from '@mui/material/colors';
 import 'bootstrap/dist/css/bootstrap.min.css'
 // import { FaBeer } from 'react-icons/fa';
 // import { Counter } from './view/components/Counter';
-import { AuthButton } from './view/components'
+import { Loading } from './view/components'
 import Routes from './Routes';
 
 
@@ -49,11 +49,11 @@ const App = () => {
 
       {/* <Counter></Counter> */}
       {/* <TextField id="outlined-basic" label="Outlined" /> */}
-      {/* <Loading></Loading> */}
+      <Loading></Loading>
       {/* <Alert /> */}
       {/* <Notify />
        <ContainedButtons /> */}
-      {/* <AuthButton /> */}
+      {/* <LoginButton /> */}
 
     </ThemeProvider>
 

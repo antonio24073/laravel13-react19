@@ -1,5 +1,5 @@
 import { Button, TextField, Typography } from "@mui/material"
-import authAction from "../../store/actions/auth.action";
+import loginAction from "../../store/actions/login.action";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { useState } from "react";
 import type { RootState } from "../../store";
@@ -7,10 +7,10 @@ import { Navigate } from "react-router-dom";
 
 
 
-export default function Auth() {
+export default function Login() {
     const dispatch = useAppDispatch();
     const { authenticated } = useAppSelector(
-        (state: RootState) => state.auth
+        (state: RootState) => state.login
     );
 
     const [email, setEmail] = useState('');
@@ -48,7 +48,7 @@ export default function Auth() {
                             size="large"
                             className="mt-4 mb-4"
                             onClick={() => dispatch(
-                                authAction.login({
+                                loginAction.login({
                                     email: email,
                                     password: password,
                                 }))}

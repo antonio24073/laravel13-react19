@@ -2,16 +2,18 @@ import { combineReducers } from 'redux'
 import loadingReducer from './loading.reducer'
 import notifyReducer from './notify.reducer'
 import alertReducer from './alert.reducer'
-import authReducer from './auth.reducer'
+import loginReducer from './login.reducer'
 import counterReducer from './counter.reducer'
+import registerReducer from './register.reducer'
 
 
 const rootReducer = combineReducers({
     loadingReducer,
     notifyReducer,
     alertReducer,
-    authReducer,
-    counterReducer
+    loginReducer,
+    counterReducer,
+    registerReducer
 })
 
 export default rootReducer;

@@ -1,11 +1,11 @@
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import type { RootState } from '../../store';
-import { login } from '../../store/thunks/auth.thunk';
+import { login } from '../../store/thunks/login.thunk';
 
-export default function AuthButton() {
+export default function LoginButton() {
   const dispatch = useAppDispatch();
   const { loading, error } = useAppSelector(
-    (state: RootState) => state.auth
+    (state: RootState) => state.login
   );
 
   const handleLogin = () => {

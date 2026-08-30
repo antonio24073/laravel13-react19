@@ -1,17 +1,19 @@
 import { configureStore } from '@reduxjs/toolkit'
-import authReducer from './reducers/auth.reducer'
+import loginReducer from './reducers/login.reducer'
 import counterReducer from './reducers/counter.reducer'
 import loadingReducer from './reducers/loading.reducer'
 import alertReducer from './reducers/alert.reducer'
 import notifyReducer from './reducers/notify.reducer'
+import registerReducer from './reducers/register.reducer'
 
 export const store = configureStore({
   reducer: {
-    auth: authReducer,
+    login: loginReducer,
     counter: counterReducer,
     loading: loadingReducer,
     alert: alertReducer,
     notify: notifyReducer,
+    register: registerReducer,
   },
 });
 

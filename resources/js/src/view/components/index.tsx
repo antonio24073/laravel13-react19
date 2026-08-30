@@ -1,5 +1,5 @@
 import Alert from './Alert'
-import AuthButton from './AuthButton'
+import LoginButton from './LoginButton'
 import Confirm from './Confirm'
 import ContainedButtons from './ContainedButtons'
 import Counter from './Counter'
@@ -9,7 +9,7 @@ import Notify from './Notify'
 
 export {
     Alert,
-    AuthButton,
+    LoginButton,
     Confirm,
     ContainedButtons,
     Counter,

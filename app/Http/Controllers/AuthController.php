@@ -9,6 +9,7 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
+        sleep(2);
         $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required', 'string'],
@@ -27,10 +28,20 @@ class AuthController extends Controller
             ]
         );
 
-        $data = new \stdClass();
-        $data->json = $response->json();
-        $data->status = $response->status();
-        
-        return response()->json($data);
+        if ($response->status() == 200) {
+            return response()->json($response->json(), 200);
+        } else {
+            return response()->json(
+                [
+                    'url' => config('services.passport.url') . '/oauth/token',
+                    'status' => $response->status(),
+                    'successful' => $response->successful(),
+                    'failed' => $response->failed(),
+                    'body' => $response->body(),
+                    'json' => $response->json()
+                ],
+                500
+            );
+        }
     }
 }

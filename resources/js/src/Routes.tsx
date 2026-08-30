@@ -1,16 +1,11 @@
 import { CircularProgress } from '@mui/material'
-import { Suspense } from 'react'
+import { lazy, Suspense } from 'react'
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
-import Auth from './view/auth'
-import type { RootState } from './store'
-import { useAppSelector } from './store/hooks'
+
+const Login = lazy(() => import('./view/login'));
+const Register = lazy(() => import('./view/register'));
 
 const AppRoutes = () => {
-
-    const { authenticated } = useAppSelector(
-        (state: RootState) => state.auth
-    );
-
     return <BrowserRouter>
         <Suspense
             fallback={
@@ -24,17 +19,19 @@ const AppRoutes = () => {
                     path="/"
                     element={
                         <>
-                            <h1>test1</h1>
-                            <br/>
-                            <Link to="/sem-autenticacao">Ir para página sem autenticacao</Link>
-                            <br/>
-                            <Link to="/login">Ir para login</Link>
+                            <h1>Home</h1>
+                            <br />
+                            <Link to="/login">Login</Link>
+                            <br />
+                            <Link to="/register">Register</Link>
+                            <br />
+                            <Link to="/vehicles">Vehicles</Link>
                         </>
                     }
                 />
-                <Route path="/sem-autenticacao" element={<h1>Página sem autenticacao</h1>} />
-                <Route path="/login" element={<Auth />} />
-                <Route path="/vehicles" element={<h1>vehicles</h1>} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/vehicles" element={<h1>Vehicles</h1>} />
             </Routes>
         </Suspense>
     </BrowserRouter>;

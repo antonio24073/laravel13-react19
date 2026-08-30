@@ -1,12 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
-import type { AuthState, LoginParams } from '../../models/auth.types';
-import { login } from '../thunks/auth.thunk';
-import { authStorage } from '../storage/auth.storage';
+import type { LoginState } from '../../models/login.types';
+import { login } from '../thunks/login.thunk';
+import { loginStorage } from '../storage/login.storage';
 
-const accessToken = authStorage.getAccessToken();
-const refreshToken = authStorage.getRefreshToken();
+const accessToken = loginStorage.getAccessToken();
+const refreshToken = loginStorage.getRefreshToken();
 
-const initialState: AuthState = {
+const initialState: LoginState = {
   accessToken,
   refreshToken,
   authenticated: !!accessToken,
@@ -14,8 +14,8 @@ const initialState: AuthState = {
   error: null
 };
 
-export const authSlice = createSlice({
-  name: 'auth',
+export const loginSlice = createSlice({
+  name: 'login',
 
   initialState,
 
@@ -26,7 +26,7 @@ export const authSlice = createSlice({
       state.authenticated = false;
       state.error = null;
 
-      authStorage.clear();
+      loginStorage.clear();
     },
   },
 
@@ -57,6 +57,6 @@ export const authSlice = createSlice({
   },
 });
 
-export const { logout } = authSlice.actions;
+export const { logout } = loginSlice.actions;
 
-export default authSlice.reducer;
+export default loginSlice.reducer;

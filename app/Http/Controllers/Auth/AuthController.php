@@ -16,7 +16,7 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|max:255|email|unique:users',
-            'password' => 'required|string|min:6'
+            'password' => 'required|string|min:6|confirmed',
         ]);
 
         if ($validator->fails()) {
@@ -24,7 +24,7 @@ class AuthController extends Controller
                 [
                     'errors' => $validator->errors()
                 ],
-                200
+                400
             );
         }
 
@@ -48,23 +48,25 @@ class AuthController extends Controller
         $user = new User;
         $user->name = $request->name;
         $user->email = $request->email;
+
+        $user->password = Hash::make($request->password);
         $user->password = Hash::make($request->password);
 
         $date = Carbon::now();
         $user->next_expiration = $date->addDays(7);
         $delete_account = clone($date);
         $user->delete_account = $delete_account->addDays(15);
-        
+
         $user->save();
 
         if($user->id){
             return response()->json([
-                'access_token' => $user->createToken('auth-api')->accessToken
+                'access_token' => $user->createToken('auth-api')->accessToken,
             ], 200);
         }
 
         return response()->json([
             'error' => 'Erro ao cadastrar usuário'
-        ], 200);
+        ], 400);
     }
 }

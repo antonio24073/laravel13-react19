@@ -1,4 +1,4 @@
-export const authStorage = {
+export const loginStorage = {
   getAccessToken: () =>
     localStorage.getItem('access_token'),
 

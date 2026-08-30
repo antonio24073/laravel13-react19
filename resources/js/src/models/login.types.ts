@@ -1,5 +1,5 @@
 
-export interface AuthState {
+export interface LoginState {
   accessToken: string | null;
   refreshToken: string | null;
   authenticated: boolean;
@@ -7,8 +7,8 @@ export interface AuthState {
   error: string | null;
 }
 
-export interface AuthModel {
-    auth: AuthState;
+export interface LoginModel {
+    login: LoginState;
 }
 
 export interface LoginParams {

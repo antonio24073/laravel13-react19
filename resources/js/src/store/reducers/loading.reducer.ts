@@ -3,7 +3,7 @@ import type { LoadingModel } from '../../models/loading.types';
 
 const state: LoadingModel = {
   loading: {
-    open: true,
+    open: false,
     msg: 'Carregando...',
   }
 }

@@ -1,14 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
-import type { AuthState } from '../../models/auth.types';
+import type { AuthState, LoginParams } from '../../models/auth.types';
 import { login } from '../thunks/auth.thunk';
+import { authStorage } from '../storage/auth.storage';
 
+const accessToken = authStorage.getAccessToken();
+const refreshToken = authStorage.getRefreshToken();
 
 const initialState: AuthState = {
-  accessToken: null,
-  refreshToken: null,
-  authenticated: false,
+  accessToken,
+  refreshToken,
+  authenticated: !!accessToken,
   loading: false,
-  error: null,
+  error: null
 };
 
 export const authSlice = createSlice({
@@ -22,6 +25,8 @@ export const authSlice = createSlice({
       state.refreshToken = null;
       state.authenticated = false;
       state.error = null;
+
+      authStorage.clear();
     },
   },
 

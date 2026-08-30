@@ -7,7 +7,7 @@ import { blue } from '@mui/material/colors';
 import 'bootstrap/dist/css/bootstrap.min.css'
 // import { FaBeer } from 'react-icons/fa';
 // import { Counter } from './view/components/Counter';
-import { Alert, AuthButton, Confirm, ContainedButtons, Counter, Loading, Notify } from './view/components'
+import { AuthButton } from './view/components'
 import Routes from './Routes';
 
 
@@ -53,7 +53,7 @@ const App = () => {
       {/* <Alert /> */}
       {/* <Notify />
        <ContainedButtons /> */}
-      <AuthButton />
+      {/* <AuthButton /> */}
 
     </ThemeProvider>
 

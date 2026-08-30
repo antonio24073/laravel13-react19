@@ -18,6 +18,7 @@ perm:
 	- sudo find . -type f -exec chmod 664 {} \;
 	- sudo chown -R 82:$$USER .
 	- sudo chmod +x node_modules/.bin/vite
+	- docker compose exec lr_app chmod 600 storage/oauth-private.key
 
 perm_db:
 	- sudo chown -R 999:999 data/mariadb
@@ -39,5 +40,7 @@ npm_run_build:
 npm_run_typecheck:
 	docker compose exec -u 82 lr_app npm run typecheck
 
-vite_clean_cache:
+clear_cache:
 	docker compose exec -u 82 lr_app rm -rf node_modules/.vite
+	docker compose exec lr_app php artisan optimize:clear
+	docker compose exec lr_app composer dump-autoload

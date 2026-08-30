@@ -3,7 +3,7 @@ import { login } from "../thunks/auth.thunk";
 
 const authAction = {
   login,
-  logout,
+  logout
 };
 
 export default authAction;

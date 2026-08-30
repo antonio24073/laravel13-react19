@@ -2,9 +2,16 @@ import { CircularProgress } from '@mui/material'
 import { Suspense } from 'react'
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import Auth from './view/auth'
+import type { RootState } from './store'
+import { useAppSelector } from './store/hooks'
 
-const AppRoutes = () => (
-    <BrowserRouter>
+const AppRoutes = () => {
+
+    const { authenticated } = useAppSelector(
+        (state: RootState) => state.auth
+    );
+
+    return <BrowserRouter>
         <Suspense
             fallback={
                 <div className="d-flex justify-content-center mt-5 pt-5">
@@ -18,16 +25,19 @@ const AppRoutes = () => (
                     element={
                         <>
                             <h1>test1</h1>
-                            <Link to="/test2">Ir para Test2</Link>
+                            <br/>
+                            <Link to="/sem-autenticacao">Ir para página sem autenticacao</Link>
+                            <br/>
                             <Link to="/login">Ir para login</Link>
                         </>
                     }
                 />
-                <Route path="/test2" element={<h1>test2</h1>} />
+                <Route path="/sem-autenticacao" element={<h1>Página sem autenticacao</h1>} />
                 <Route path="/login" element={<Auth />} />
+                <Route path="/vehicles" element={<h1>vehicles</h1>} />
             </Routes>
         </Suspense>
-    </BrowserRouter>
-)
+    </BrowserRouter>;
+}
 
 export default AppRoutes

@@ -1,12 +1,18 @@
 import { Button, TextField, Typography } from "@mui/material"
 import authAction from "../../store/actions/auth.action";
-import { useAppDispatch } from "../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { useState } from "react";
+import type { RootState } from "../../store";
+import { Navigate } from "react-router-dom";
 
 
 
 export default function Auth() {
     const dispatch = useAppDispatch();
+    const { authenticated } = useAppSelector(
+        (state: RootState) => state.auth
+    );
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -27,7 +33,7 @@ export default function Auth() {
                             autoComplete="email"
                             value={email}
                             onChange={(event) => setEmail(event.target.value)}
-                                />
+                        />
                         <TextField
                             label="Senha"
                             type="password"
@@ -47,6 +53,9 @@ export default function Auth() {
                                     password: password,
                                 }))}
                         >Entrar</Button>
+                        {(authenticated) &&
+                            <Navigate to="/vehicles" />
+                        }
                     </div>
                 </div>
             </div>

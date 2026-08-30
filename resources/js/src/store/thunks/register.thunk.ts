@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import type {
+    RegisterErrors,
     RegisterParams,
     RegisterResponse
 } from '../../models/register.types';
@@ -10,7 +11,7 @@ export const register = createAsyncThunk<
     RegisterResponse,
     RegisterParams,
     {
-        rejectValue: string;
+        rejectValue: RegisterErrors;
     }
 >(
     'register/register',
@@ -29,11 +30,15 @@ export const register = createAsyncThunk<
             return response.data;
 
         } catch (error: any) {
+            
             return rejectWithValue(
-                error.response?.data?.message ||
-                error.response?.data?.error_description ||
-                'Erro ao realizar cadastro.'
+                error.response?.data?.errors ?? {
+                    general: [
+                        'Erro ao realizar cadastro.'
+                    ]
+                }
             );
+            
         } finally {
             dispatch(loadingAction.close());
         }

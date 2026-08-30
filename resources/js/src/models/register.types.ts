@@ -10,8 +10,16 @@ export interface RegisterResponse {
     refresh_token: string;
 }
 
+export interface RegisterErrors {
+    name?: string[];
+    email?: string[];
+    password?: string[];
+    password_confirmation?: string[];
+    general?: string[];
+}
+
 export interface RegisterState {
     loading: boolean;
     success: boolean;
-    error: string | null;
+    error: RegisterErrors | null;
 }

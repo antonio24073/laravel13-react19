@@ -39,9 +39,9 @@ export const registerSlice = createSlice({
             .addCase(register.rejected, (state, action) => {
                 state.loading = false;
                 state.success = false;
-                state.error =
-                    action.payload ??
-                    'Erro ao realizar cadastro.';
+                state.error = action.payload ?? {
+                    general: ['Erro ao realizar cadastro.']
+                };
             });
     },
 });

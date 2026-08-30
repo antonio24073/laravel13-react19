@@ -90,6 +90,8 @@ export default function Register() {
                                     required
                                     fullWidth
                                     autoComplete="name"
+                                    error={!!error?.name}
+                                    helperText={error?.name?.[0]}
                                 />
 
                                 <TextField
@@ -103,6 +105,8 @@ export default function Register() {
                                     required
                                     fullWidth
                                     autoComplete="email"
+                                    error={!!error?.email}
+                                    helperText={error?.email?.[0]}
                                 />
 
                                 <TextField
@@ -116,6 +120,8 @@ export default function Register() {
                                     required
                                     fullWidth
                                     autoComplete="new-password"
+                                    error={!!error?.password}
+                                    helperText={error?.password?.[0]}
                                 />
 
                                 <TextField
@@ -131,11 +137,13 @@ export default function Register() {
                                     required
                                     fullWidth
                                     autoComplete="new-password"
+                                    error={!!error?.password_confirmation}
+                                    helperText={error?.password_confirmation?.[0]}
                                 />
-
-                                {error && (
+                                
+                                {error?.general && (
                                     <Alert severity="error">
-                                        {error}
+                                        {error.general[0]}
                                     </Alert>
                                 )}
 

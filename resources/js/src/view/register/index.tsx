@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
     Alert,
     Box,
@@ -9,9 +9,11 @@ import {
 
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { register } from '../../store/thunks/register.thunk';
+import { useNavigate } from 'react-router-dom';
 
 export default function Register() {
     const dispatch = useAppDispatch();
+
 
     const { loading, success, error } = useAppSelector(
         (state) => state.register
@@ -34,6 +36,22 @@ export default function Register() {
             })
         );
     };
+
+
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (!success) {
+            return;
+        }
+
+        const timer = setTimeout(() => {
+            navigate('/login');
+        }, 3000);
+
+        return () => clearTimeout(timer);
+        // se o usuário sair da página antes dos 3 segundos 
+        // cancela o redirecionamento pendente
+    }, [success]);
 
     return (
         <div className="d-flex bg-white min-vh-100">
@@ -140,7 +158,7 @@ export default function Register() {
                                     error={!!error?.password_confirmation}
                                     helperText={error?.password_confirmation?.[0]}
                                 />
-                                
+
                                 {error?.general && (
                                     <Alert severity="error">
                                         {error.general[0]}
@@ -149,7 +167,7 @@ export default function Register() {
 
                                 {success && (
                                     <Alert severity="success">
-                                        Cadastro realizado com sucesso!
+                                        Cadastro realizado com sucesso! Você será redirecionado para o login.
                                     </Alert>
                                 )}
 

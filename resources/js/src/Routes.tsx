@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 
 const Login = lazy(() => import('./view/login'));
 const Register = lazy(() => import('./view/register'));
+const Vehicles = lazy(() => import('./view/vehicles'));
 
 const AppRoutes = () => {
     return <BrowserRouter>
@@ -31,7 +32,7 @@ const AppRoutes = () => {
                 />
                 <Route path="/register" element={<Register />} />
                 <Route path="/login" element={<Login />} />
-                <Route path="/vehicles" element={<h1>Vehicles</h1>} />
+                <Route path="/vehicles" element={<Vehicles />} />
             </Routes>
         </Suspense>
     </BrowserRouter>;

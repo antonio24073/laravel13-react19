@@ -9,7 +9,51 @@
 }
 
 
+/* own css below */
+
 * {
     outline: none !important;
+}
+
+a,
+a:hover {
+    text-decoration: none !important
+}
+
+header nav {
+    border-bottom: 2px solid rgb(229, 229, 229);
+}
+
+header .navbar-nav > li {
+    font-weight: 600;
+    color: #555 !important;
+    border-bottom: 2px solid transparent;
+}
+
+header .navbar-nav > li > .nav-link:hover {
+    border-bottom: 2px solid #1976d2;
+    color: #1976d2 !important;
+}
+
+header .navbar-nav > li.active {
+    border-bottom: 2px solid;
+}
+
+header .nav-link:hover {
+    font-weight: 700;
+    color: #1976d2 !important;
+}
+
+header .dropdown-menu {
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 16px 0px, rgba(0,0,0,0.06) 0px 2px 6px 0px;
+    border: 1px solid #eee;
+    top: 80%;
+}
+
+header .dropdown-menu > li {
+    padding: 0px;
+    font-weight: 600;
+    color: #444;
+    line-height: 12px !important;
 }
 

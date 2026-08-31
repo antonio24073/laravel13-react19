@@ -55,3 +55,25 @@ header .dropdown-menu>li {
     color: #444;
     line-height: 12px !important;
 }
+
+
+.menu-mobile {
+    padding: 8px 10px !important;
+}
+
+
+/* Usuário */
+.menu-mobile > .MuiListItem-root {
+    max-height: 48px;
+}
+
+.menu-mobile > .MuiListItem-root span{
+    font-weight: 600 !important;
+    color: #444
+}
+
+.menu-mobile > .MuiListItem-root svg {
+    font-size: 22px;
+    color: #444;
+}
+

@@ -19,6 +19,7 @@ perm:
 	- sudo chown -R 82:$$USER .
 	- sudo chmod +x node_modules/.bin/vite
 	- docker compose exec lr_app chmod 600 storage/oauth-private.key
+	- docker compose exec lr_database chown -R mysql:mysql /var/lib/mysql
 
 perm_db:
 	- sudo chown -R 999:999 data/mariadb

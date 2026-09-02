@@ -47,6 +47,8 @@ RUN docker-php-ext-configure gd \
         pdo_mysql \
         zip
 
+RUN apk add --no-cache mariadb-client
+
 RUN apk del .build-deps
 
 # Composer

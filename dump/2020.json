@@ -1,0 +1,2649 @@
+[
+    {
+        "code": "carbrand",
+        "param_key": "vehicle_brand",
+        "datasource": {
+            "type": "remote",
+            "url": "https://ck-gw.olx.com.br/attributes/carbrand/values?format=remote"
+        },
+        "extra_data": {
+            "behavior": "single_selection",
+            "label": "Marca",
+            "presentation": "submenu"
+        },
+        "filter_extra_data": {
+            "filter_ui": {
+                "behavior": "single_selection",
+                "group_name": "brands",
+                "group_type": "highlight_selection",
+                "label": "Marca",
+                "placeholder": "Todas as marcas",
+                "presentation": "highlight_list",
+                "seo": true
+            }
+        },
+        "filter_datasource": {
+            "type": "remote",
+            "url": "https://www.olx.com.br/api/filters/v1/attributes/carbrand"
+        },
+        "rules": [
+            {
+                "required": "true"
+            }
+        ],
+        "insertable": true,
+        "filterable": true,
+        "categories": null,
+        "type": "int"
+    },
+    {
+        "code": "carmodel",
+        "param_key": "vehicle_model",
+        "datasource": {
+            "type": "remote",
+            "url": "https://ck-gw.olx.com.br/attributes/carmodel/values?format=remote&carbrand=${vehicle_brand}",
+            "depends_on": [
+                "vehicle_brand"
+            ]
+        },
+        "extra_data": {
+            "behavior": "single_selection",
+            "label": "Modelo",
+            "presentation": "submenu"
+        },
+        "filter_extra_data": {
+            "filter_ui": {
+                "behavior": "single_selection",
+                "group_name": "brands",
+                "label": "Modelo",
+                "placeholder": "Todos os modelos",
+                "presentation": "modal_selection",
+                "seo": true
+            }
+        },
+        "filter_datasource": {
+            "type": "remote",
+            "url": "https://www.olx.com.br/api/filters/v1/attributes/carmodel?carbrand={vehicle_brand}",
+            "depends_on": [
+                "vehicle_brand"
+            ]
+        },
+        "rules": [
+            {
+                "required": "true"
+            }
+        ],
+        "insertable": true,
+        "filterable": true,
+        "categories": null,
+        "type": "int"
+    },
+    {
+        "code": "carversion",
+        "param_key": "vehicle_version",
+        "datasource": {
+            "type": "remote",
+            "url": "https://ck-gw.olx.com.br/attributes/carversion/values?format=remote&carbrand=${vehicle_brand}&carmodel=${vehicle_model}",
+            "depends_on": [
+                "vehicle_brand",
+                "vehicle_model"
+            ]
+        },
+        "extra_data": {
+            "behavior": "single_selection",
+            "label": "Versão",
+            "presentation": "submenu"
+        },
+        "filter_extra_data": {
+            "filter_ui": {
+                "behavior": "single_selection",
+                "group_name": "brands",
+                "label": "Versão",
+                "placeholder": "Todas as versões",
+                "presentation": "modal_selection",
+                "seo": true
+            }
+        },
+        "filter_datasource": {
+            "type": "remote",
+            "url": "https://www.olx.com.br/api/filters/v1/attributes/carversion?carbrand={vehicle_brand}&carmodel={vehicle_model}",
+            "depends_on": [
+                "vehicle_brand",
+                "vehicle_model"
+            ]
+        },
+        "rules": [
+            {
+                "required": "true"
+            }
+        ],
+        "insertable": true,
+        "filterable": true,
+        "categories": null,
+        "type": "int"
+    },
+    {
+        "code": "motorpower",
+        "param_key": "motorpower",
+        "datasource": {
+            "type": "local",
+            "values": [
+                {
+                    "key": "1",
+                    "value": "1.0"
+                },
+                {
+                    "key": "2",
+                    "value": "1.2"
+                },
+                {
+                    "key": "3",
+                    "value": "1.3"
+                },
+                {
+                    "key": "4",
+                    "value": "1.4"
+                },
+                {
+                    "key": "5",
+                    "value": "1.5"
+                },
+                {
+                    "key": "6",
+                    "value": "1.6"
+                },
+                {
+                    "key": "7",
+                    "value": "1.7"
+                },
+                {
+                    "key": "8",
+                    "value": "1.8"
+                },
+                {
+                    "key": "9",
+                    "value": "1.9"
+                },
+                {
+                    "key": "10",
+                    "value": "2.0 - 2.9"
+                },
+                {
+                    "key": "11",
+                    "value": "3.0 - 3.9"
+                },
+                {
+                    "key": "12",
+                    "value": "4.0 ou mais"
+                }
+            ]
+        },
+        "extra_data": {
+            "behavior": "single_selection",
+            "label": "Potência do motor",
+            "presentation": "submenu"
+        },
+        "filter_extra_data": {
+            "filter_ui": {
+                "behavior": "single_selection",
+                "label": "Motor",
+                "placeholder": "Selecione",
+                "presentation": "selection"
+            }
+        },
+        "filter_datasource": {
+            "type": "local",
+            "values": [
+                {
+                    "key": "1",
+                    "value": "1.0",
+                    "qs_value": "1",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "2",
+                    "value": "1.2",
+                    "qs_value": "2",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "3",
+                    "value": "1.3",
+                    "qs_value": "3",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "4",
+                    "value": "1.4",
+                    "qs_value": "4",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "5",
+                    "value": "1.5",
+                    "qs_value": "5",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "6",
+                    "value": "1.6",
+                    "qs_value": "6",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "7",
+                    "value": "1.7",
+                    "qs_value": "7",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "8",
+                    "value": "1.8",
+                    "qs_value": "8",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "9",
+                    "value": "1.9",
+                    "qs_value": "9",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "10",
+                    "value": "2.0 - 2.9",
+                    "qs_value": "10",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "11",
+                    "value": "3.0 - 3.9",
+                    "qs_value": "11",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "12",
+                    "value": "4.0 ou mais",
+                    "qs_value": "12",
+                    "friendly_path": ""
+                }
+            ]
+        },
+        "rules": [],
+        "insertable": true,
+        "filterable": true,
+        "categories": null,
+        "type": "int"
+    },
+    {
+        "code": "exchange",
+        "param_key": "exchange",
+        "datasource": {
+            "type": "local",
+            "values": [
+                {
+                    "key": "1",
+                    "value": "Sim"
+                },
+                {
+                    "key": "2",
+                    "value": "Não"
+                }
+            ]
+        },
+        "extra_data": {
+            "behavior": "single_selection",
+            "label": "Aceita Trocas",
+            "presentation": "toggle",
+            "toogleValuesMap": {
+                "falsyValue": "2",
+                "truthyValue": "1"
+            }
+        },
+        "filter_extra_data": {
+            "filter_ui": {
+                "behavior": "single_selection",
+                "label": "Aceita Trocas",
+                "placeholder": "Selecione",
+                "presentation": "chips"
+            }
+        },
+        "filter_datasource": {
+            "type": "local",
+            "values": [
+                {
+                    "key": "1",
+                    "value": "Sim",
+                    "qs_value": "1",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "2",
+                    "value": "Não",
+                    "qs_value": "2",
+                    "friendly_path": ""
+                }
+            ]
+        },
+        "rules": [],
+        "insertable": true,
+        "filterable": true,
+        "categories": null,
+        "type": "range"
+    },
+    {
+        "code": "mileage",
+        "param_key": "mileage",
+        "extra_data": {
+            "behavior": "text",
+            "label": "Quilometragem",
+            "presentation": "slider"
+        },
+        "filter_extra_data": {
+            "filter_ui": {
+                "label": "Quilometragem",
+                "placeholder": {
+                    "max": "Km até",
+                    "min": "Km de"
+                },
+                "presentation": "selection_range"
+            }
+        },
+        "filter_datasource": {
+            "type": "local",
+            "values": [
+                {
+                    "key": "0",
+                    "value": "0",
+                    "qs_value": "0",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "5000",
+                    "value": "5.000",
+                    "qs_value": "5000",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "10000",
+                    "value": "10.000",
+                    "qs_value": "10000",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "20000",
+                    "value": "20.000",
+                    "qs_value": "20000",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "30000",
+                    "value": "30.000",
+                    "qs_value": "30000",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "40000",
+                    "value": "40.000",
+                    "qs_value": "40000",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "60000",
+                    "value": "60.000",
+                    "qs_value": "60000",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "80000",
+                    "value": "80.000",
+                    "qs_value": "80000",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "100000",
+                    "value": "100.000",
+                    "qs_value": "100000",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "120000",
+                    "value": "120.000",
+                    "qs_value": "120000",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "140000",
+                    "value": "140.000",
+                    "qs_value": "140000",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "160000",
+                    "value": "160.000",
+                    "qs_value": "160000",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "180000",
+                    "value": "180.000",
+                    "qs_value": "180000",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "200000",
+                    "value": "200.000",
+                    "qs_value": "200000",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "250000",
+                    "value": "250.000",
+                    "qs_value": "250000",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "300000",
+                    "value": "300.000",
+                    "qs_value": "300000",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "400000",
+                    "value": "400.000",
+                    "qs_value": "400000",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "500000",
+                    "value": "500.000",
+                    "qs_value": "500000",
+                    "friendly_path": ""
+                }
+            ]
+        },
+        "rules": [
+            {
+                "required": "true"
+            }
+        ],
+        "insertable": true,
+        "filterable": true,
+        "categories": null,
+        "type": "range"
+    },
+    {
+        "code": "regdate",
+        "param_key": "regdate",
+        "datasource": {
+            "type": "local",
+            "values": [
+                {
+                    "key": "2027",
+                    "value": "2027"
+                },
+                {
+                    "key": "2026",
+                    "value": "2026"
+                },
+                {
+                    "key": "2025",
+                    "value": "2025"
+                },
+                {
+                    "key": "2024",
+                    "value": "2024"
+                },
+                {
+                    "key": "2023",
+                    "value": "2023"
+                },
+                {
+                    "key": "2022",
+                    "value": "2022"
+                },
+                {
+                    "key": "2021",
+                    "value": "2021"
+                },
+                {
+                    "key": "2020",
+                    "value": "2020"
+                },
+                {
+                    "key": "2019",
+                    "value": "2019"
+                },
+                {
+                    "key": "2018",
+                    "value": "2018"
+                },
+                {
+                    "key": "2017",
+                    "value": "2017"
+                },
+                {
+                    "key": "2016",
+                    "value": "2016"
+                },
+                {
+                    "key": "2015",
+                    "value": "2015"
+                },
+                {
+                    "key": "2014",
+                    "value": "2014"
+                },
+                {
+                    "key": "2013",
+                    "value": "2013"
+                },
+                {
+                    "key": "2012",
+                    "value": "2012"
+                },
+                {
+                    "key": "2011",
+                    "value": "2011"
+                },
+                {
+                    "key": "2010",
+                    "value": "2010"
+                },
+                {
+                    "key": "2009",
+                    "value": "2009"
+                },
+                {
+                    "key": "2008",
+                    "value": "2008"
+                },
+                {
+                    "key": "2007",
+                    "value": "2007"
+                },
+                {
+                    "key": "2006",
+                    "value": "2006"
+                },
+                {
+                    "key": "2005",
+                    "value": "2005"
+                },
+                {
+                    "key": "2004",
+                    "value": "2004"
+                },
+                {
+                    "key": "2003",
+                    "value": "2003"
+                },
+                {
+                    "key": "2002",
+                    "value": "2002"
+                },
+                {
+                    "key": "2001",
+                    "value": "2001"
+                },
+                {
+                    "key": "2000",
+                    "value": "2000"
+                },
+                {
+                    "key": "1999",
+                    "value": "1999"
+                },
+                {
+                    "key": "1998",
+                    "value": "1998"
+                },
+                {
+                    "key": "1997",
+                    "value": "1997"
+                },
+                {
+                    "key": "1996",
+                    "value": "1996"
+                },
+                {
+                    "key": "1995",
+                    "value": "1995"
+                },
+                {
+                    "key": "1994",
+                    "value": "1994"
+                },
+                {
+                    "key": "1993",
+                    "value": "1993"
+                },
+                {
+                    "key": "1992",
+                    "value": "1992"
+                },
+                {
+                    "key": "1991",
+                    "value": "1991"
+                },
+                {
+                    "key": "1990",
+                    "value": "1990"
+                },
+                {
+                    "key": "1989",
+                    "value": "1989"
+                },
+                {
+                    "key": "1988",
+                    "value": "1988"
+                },
+                {
+                    "key": "1987",
+                    "value": "1987"
+                },
+                {
+                    "key": "1986",
+                    "value": "1986"
+                },
+                {
+                    "key": "1985",
+                    "value": "1985"
+                },
+                {
+                    "key": "1984",
+                    "value": "1984"
+                },
+                {
+                    "key": "1983",
+                    "value": "1983"
+                },
+                {
+                    "key": "1982",
+                    "value": "1982"
+                },
+                {
+                    "key": "1981",
+                    "value": "1981"
+                },
+                {
+                    "key": "1980",
+                    "value": "1980"
+                },
+                {
+                    "key": "1979",
+                    "value": "1979"
+                },
+                {
+                    "key": "1978",
+                    "value": "1978"
+                },
+                {
+                    "key": "1977",
+                    "value": "1977"
+                },
+                {
+                    "key": "1976",
+                    "value": "1976"
+                },
+                {
+                    "key": "1975",
+                    "value": "1975"
+                },
+                {
+                    "key": "1974",
+                    "value": "1974"
+                },
+                {
+                    "key": "1973",
+                    "value": "1973"
+                },
+                {
+                    "key": "1972",
+                    "value": "1972"
+                },
+                {
+                    "key": "1971",
+                    "value": "1971"
+                },
+                {
+                    "key": "1970",
+                    "value": "1970"
+                },
+                {
+                    "key": "1969",
+                    "value": "1969"
+                },
+                {
+                    "key": "1968",
+                    "value": "1968"
+                },
+                {
+                    "key": "1967",
+                    "value": "1967"
+                },
+                {
+                    "key": "1966",
+                    "value": "1966"
+                },
+                {
+                    "key": "1965",
+                    "value": "1965"
+                },
+                {
+                    "key": "1964",
+                    "value": "1964"
+                },
+                {
+                    "key": "1963",
+                    "value": "1963"
+                },
+                {
+                    "key": "1962",
+                    "value": "1962"
+                },
+                {
+                    "key": "1961",
+                    "value": "1961"
+                },
+                {
+                    "key": "1960",
+                    "value": "1960"
+                },
+                {
+                    "key": "1959",
+                    "value": "1959"
+                },
+                {
+                    "key": "1958",
+                    "value": "1958"
+                },
+                {
+                    "key": "1957",
+                    "value": "1957"
+                },
+                {
+                    "key": "1956",
+                    "value": "1956"
+                },
+                {
+                    "key": "1955",
+                    "value": "1955"
+                },
+                {
+                    "key": "1954",
+                    "value": "1954"
+                },
+                {
+                    "key": "1953",
+                    "value": "1953"
+                },
+                {
+                    "key": "1952",
+                    "value": "1952"
+                },
+                {
+                    "key": "1951",
+                    "value": "1951"
+                },
+                {
+                    "key": "1950",
+                    "value": "1950 ou anterior"
+                }
+            ]
+        },
+        "extra_data": {
+            "behavior": "single_selection",
+            "label": "Ano do modelo",
+            "presentation": "submenu"
+        },
+        "filter_extra_data": {
+            "filter_ui": {
+                "label": "Ano",
+                "placeholder": {
+                    "max": "Até ano",
+                    "min": "Do ano"
+                },
+                "presentation": "integer_range"
+            }
+        },
+        "filter_datasource": {
+            "type": "local",
+            "values": [
+                {
+                    "key": "1950",
+                    "value": "1950 ou anterior",
+                    "qs_value": "0",
+                    "friendly_path": "1950"
+                },
+                {
+                    "key": "1951",
+                    "value": "1951",
+                    "qs_value": "1",
+                    "friendly_path": "1951"
+                },
+                {
+                    "key": "1952",
+                    "value": "1952",
+                    "qs_value": "2",
+                    "friendly_path": "1952"
+                },
+                {
+                    "key": "1953",
+                    "value": "1953",
+                    "qs_value": "3",
+                    "friendly_path": "1953"
+                },
+                {
+                    "key": "1954",
+                    "value": "1954",
+                    "qs_value": "4",
+                    "friendly_path": "1954"
+                },
+                {
+                    "key": "1955",
+                    "value": "1955",
+                    "qs_value": "5",
+                    "friendly_path": "1955"
+                },
+                {
+                    "key": "1956",
+                    "value": "1956",
+                    "qs_value": "6",
+                    "friendly_path": "1956"
+                },
+                {
+                    "key": "1957",
+                    "value": "1957",
+                    "qs_value": "7",
+                    "friendly_path": "1957"
+                },
+                {
+                    "key": "1958",
+                    "value": "1958",
+                    "qs_value": "8",
+                    "friendly_path": "1958"
+                },
+                {
+                    "key": "1959",
+                    "value": "1959",
+                    "qs_value": "9",
+                    "friendly_path": "1959"
+                },
+                {
+                    "key": "1960",
+                    "value": "1960",
+                    "qs_value": "10",
+                    "friendly_path": "1960"
+                },
+                {
+                    "key": "1961",
+                    "value": "1961",
+                    "qs_value": "11",
+                    "friendly_path": "1961"
+                },
+                {
+                    "key": "1962",
+                    "value": "1962",
+                    "qs_value": "12",
+                    "friendly_path": "1962"
+                },
+                {
+                    "key": "1963",
+                    "value": "1963",
+                    "qs_value": "13",
+                    "friendly_path": "1963"
+                },
+                {
+                    "key": "1964",
+                    "value": "1964",
+                    "qs_value": "14",
+                    "friendly_path": "1964"
+                },
+                {
+                    "key": "1965",
+                    "value": "1965",
+                    "qs_value": "15",
+                    "friendly_path": "1965"
+                },
+                {
+                    "key": "1966",
+                    "value": "1966",
+                    "qs_value": "16",
+                    "friendly_path": "1966"
+                },
+                {
+                    "key": "1967",
+                    "value": "1967",
+                    "qs_value": "17",
+                    "friendly_path": "1967"
+                },
+                {
+                    "key": "1968",
+                    "value": "1968",
+                    "qs_value": "18",
+                    "friendly_path": "1968"
+                },
+                {
+                    "key": "1969",
+                    "value": "1969",
+                    "qs_value": "19",
+                    "friendly_path": "1969"
+                },
+                {
+                    "key": "1970",
+                    "value": "1970",
+                    "qs_value": "20",
+                    "friendly_path": "1970"
+                },
+                {
+                    "key": "1971",
+                    "value": "1971",
+                    "qs_value": "21",
+                    "friendly_path": "1971"
+                },
+                {
+                    "key": "1972",
+                    "value": "1972",
+                    "qs_value": "22",
+                    "friendly_path": "1972"
+                },
+                {
+                    "key": "1973",
+                    "value": "1973",
+                    "qs_value": "23",
+                    "friendly_path": "1973"
+                },
+                {
+                    "key": "1974",
+                    "value": "1974",
+                    "qs_value": "24",
+                    "friendly_path": "1974"
+                },
+                {
+                    "key": "1975",
+                    "value": "1975",
+                    "qs_value": "25",
+                    "friendly_path": "1975"
+                },
+                {
+                    "key": "1976",
+                    "value": "1976",
+                    "qs_value": "26",
+                    "friendly_path": "1976"
+                },
+                {
+                    "key": "1977",
+                    "value": "1977",
+                    "qs_value": "27",
+                    "friendly_path": "1977"
+                },
+                {
+                    "key": "1978",
+                    "value": "1978",
+                    "qs_value": "28",
+                    "friendly_path": "1978"
+                },
+                {
+                    "key": "1979",
+                    "value": "1979",
+                    "qs_value": "29",
+                    "friendly_path": "1979"
+                },
+                {
+                    "key": "1980",
+                    "value": "1980",
+                    "qs_value": "30",
+                    "friendly_path": "1980"
+                },
+                {
+                    "key": "1981",
+                    "value": "1981",
+                    "qs_value": "31",
+                    "friendly_path": "1981"
+                },
+                {
+                    "key": "1982",
+                    "value": "1982",
+                    "qs_value": "32",
+                    "friendly_path": "1982"
+                },
+                {
+                    "key": "1983",
+                    "value": "1983",
+                    "qs_value": "33",
+                    "friendly_path": "1983"
+                },
+                {
+                    "key": "1984",
+                    "value": "1984",
+                    "qs_value": "34",
+                    "friendly_path": "1984"
+                },
+                {
+                    "key": "1985",
+                    "value": "1985",
+                    "qs_value": "35",
+                    "friendly_path": "1985"
+                },
+                {
+                    "key": "1986",
+                    "value": "1986",
+                    "qs_value": "36",
+                    "friendly_path": "1986"
+                },
+                {
+                    "key": "1987",
+                    "value": "1987",
+                    "qs_value": "37",
+                    "friendly_path": "1987"
+                },
+                {
+                    "key": "1988",
+                    "value": "1988",
+                    "qs_value": "38",
+                    "friendly_path": "1988"
+                },
+                {
+                    "key": "1989",
+                    "value": "1989",
+                    "qs_value": "39",
+                    "friendly_path": "1989"
+                },
+                {
+                    "key": "1990",
+                    "value": "1990",
+                    "qs_value": "40",
+                    "friendly_path": "1990"
+                },
+                {
+                    "key": "1991",
+                    "value": "1991",
+                    "qs_value": "41",
+                    "friendly_path": "1991"
+                },
+                {
+                    "key": "1992",
+                    "value": "1992",
+                    "qs_value": "42",
+                    "friendly_path": "1992"
+                },
+                {
+                    "key": "1993",
+                    "value": "1993",
+                    "qs_value": "43",
+                    "friendly_path": "1993"
+                },
+                {
+                    "key": "1994",
+                    "value": "1994",
+                    "qs_value": "44",
+                    "friendly_path": "1994"
+                },
+                {
+                    "key": "1995",
+                    "value": "1995",
+                    "qs_value": "45",
+                    "friendly_path": "1995"
+                },
+                {
+                    "key": "1996",
+                    "value": "1996",
+                    "qs_value": "46",
+                    "friendly_path": "1996"
+                },
+                {
+                    "key": "1997",
+                    "value": "1997",
+                    "qs_value": "47",
+                    "friendly_path": "1997"
+                },
+                {
+                    "key": "1998",
+                    "value": "1998",
+                    "qs_value": "48",
+                    "friendly_path": "1998"
+                },
+                {
+                    "key": "1999",
+                    "value": "1999",
+                    "qs_value": "49",
+                    "friendly_path": "1999"
+                },
+                {
+                    "key": "2000",
+                    "value": "2000",
+                    "qs_value": "50",
+                    "friendly_path": "2000"
+                },
+                {
+                    "key": "2001",
+                    "value": "2001",
+                    "qs_value": "51",
+                    "friendly_path": "2001"
+                },
+                {
+                    "key": "2002",
+                    "value": "2002",
+                    "qs_value": "52",
+                    "friendly_path": "2002"
+                },
+                {
+                    "key": "2003",
+                    "value": "2003",
+                    "qs_value": "53",
+                    "friendly_path": "2003"
+                },
+                {
+                    "key": "2004",
+                    "value": "2004",
+                    "qs_value": "54",
+                    "friendly_path": "2004"
+                },
+                {
+                    "key": "2005",
+                    "value": "2005",
+                    "qs_value": "55",
+                    "friendly_path": "2005"
+                },
+                {
+                    "key": "2006",
+                    "value": "2006",
+                    "qs_value": "56",
+                    "friendly_path": "2006"
+                },
+                {
+                    "key": "2007",
+                    "value": "2007",
+                    "qs_value": "57",
+                    "friendly_path": "2007"
+                },
+                {
+                    "key": "2008",
+                    "value": "2008",
+                    "qs_value": "58",
+                    "friendly_path": "2008"
+                },
+                {
+                    "key": "2009",
+                    "value": "2009",
+                    "qs_value": "59",
+                    "friendly_path": "2009"
+                },
+                {
+                    "key": "2010",
+                    "value": "2010",
+                    "qs_value": "60",
+                    "friendly_path": "2010"
+                },
+                {
+                    "key": "2011",
+                    "value": "2011",
+                    "qs_value": "61",
+                    "friendly_path": "2011"
+                },
+                {
+                    "key": "2012",
+                    "value": "2012",
+                    "qs_value": "62",
+                    "friendly_path": "2012"
+                },
+                {
+                    "key": "2013",
+                    "value": "2013",
+                    "qs_value": "63",
+                    "friendly_path": "2013"
+                },
+                {
+                    "key": "2014",
+                    "value": "2014",
+                    "qs_value": "64",
+                    "friendly_path": "2014"
+                },
+                {
+                    "key": "2015",
+                    "value": "2015",
+                    "qs_value": "65",
+                    "friendly_path": "2015"
+                },
+                {
+                    "key": "2016",
+                    "value": "2016",
+                    "qs_value": "66",
+                    "friendly_path": "2016"
+                },
+                {
+                    "key": "2017",
+                    "value": "2017",
+                    "qs_value": "67",
+                    "friendly_path": "2017"
+                },
+                {
+                    "key": "2018",
+                    "value": "2018",
+                    "qs_value": "68",
+                    "friendly_path": "2018"
+                },
+                {
+                    "key": "2019",
+                    "value": "2019",
+                    "qs_value": "69",
+                    "friendly_path": "2019"
+                },
+                {
+                    "key": "2020",
+                    "value": "2020",
+                    "qs_value": "70",
+                    "friendly_path": "2020"
+                },
+                {
+                    "key": "2021",
+                    "value": "2021",
+                    "qs_value": "71",
+                    "friendly_path": "2021"
+                },
+                {
+                    "key": "2022",
+                    "value": "2022",
+                    "qs_value": "72",
+                    "friendly_path": "2022"
+                },
+                {
+                    "key": "2023",
+                    "value": "2023",
+                    "qs_value": "73",
+                    "friendly_path": "2023"
+                },
+                {
+                    "key": "2024",
+                    "value": "2024",
+                    "qs_value": "74",
+                    "friendly_path": "2024"
+                },
+                {
+                    "key": "2025",
+                    "value": "2025",
+                    "qs_value": "75",
+                    "friendly_path": "2025"
+                },
+                {
+                    "key": "2026",
+                    "value": "2026",
+                    "qs_value": "76",
+                    "friendly_path": "2026"
+                },
+                {
+                    "key": "2027",
+                    "value": "2027",
+                    "qs_value": "77",
+                    "friendly_path": "2027"
+                }
+            ]
+        },
+        "rules": [
+            {
+                "required": "true"
+            }
+        ],
+        "insertable": true,
+        "filterable": true,
+        "categories": null,
+        "type": "range"
+    },
+    {
+        "code": "price_text",
+        "param_key": "price",
+        "extra_data": {
+            "behavior": "text",
+            "label": "Preço (R$)",
+            "presentation": "textfield"
+        },
+        "filter_extra_data": {
+            "filter_ui": {
+                "label": "Preço",
+                "placeholder": {
+                    "max": "Máx.",
+                    "min": "Min."
+                },
+                "presentation": "integer_range"
+            }
+        },
+        "rules": [
+            {
+                "message": "O preço minimo é R$ 1,00",
+                "min": "1"
+            },
+            {
+                "max": "99999999",
+                "message": "O preço maximo é R$ 99.999.999,00"
+            }
+        ],
+        "insertable": true,
+        "filterable": true,
+        "categories": null,
+        "type": "text"
+    },
+    {
+        "code": "gearbox",
+        "param_key": "gearbox",
+        "datasource": {
+            "type": "local",
+            "values": [
+                {
+                    "key": "1",
+                    "value": "Manual"
+                },
+                {
+                    "key": "2",
+                    "value": "Automático"
+                },
+                {
+                    "key": "3",
+                    "value": "Semi-Automático"
+                },
+                {
+                    "key": "4",
+                    "value": "Automatizado"
+                }
+            ]
+        },
+        "extra_data": {
+            "behavior": "single_selection",
+            "label": "Câmbio",
+            "presentation": "submenu"
+        },
+        "filter_extra_data": {
+            "filter_ui": {
+                "behavior": "multi_selection",
+                "label": "Câmbio",
+                "presentation": "checkbox"
+            }
+        },
+        "filter_datasource": {
+            "type": "local",
+            "values": [
+                {
+                    "key": "1",
+                    "value": "Manual",
+                    "qs_value": "1",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "2",
+                    "value": "Automático",
+                    "qs_value": "2",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "3",
+                    "value": "Semi-Automático",
+                    "qs_value": "3",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "4",
+                    "value": "Automatizado",
+                    "qs_value": "4",
+                    "friendly_path": ""
+                }
+            ]
+        },
+        "rules": [],
+        "insertable": true,
+        "filterable": true,
+        "categories": null,
+        "type": "int"
+    },
+    {
+        "code": "end_tag",
+        "param_key": "end_tag",
+        "datasource": {
+            "type": "local",
+            "values": [
+                {
+                    "key": "1",
+                    "value": "0"
+                },
+                {
+                    "key": "2",
+                    "value": "1"
+                },
+                {
+                    "key": "3",
+                    "value": "2"
+                },
+                {
+                    "key": "4",
+                    "value": "3"
+                },
+                {
+                    "key": "5",
+                    "value": "4"
+                },
+                {
+                    "key": "6",
+                    "value": "5"
+                },
+                {
+                    "key": "7",
+                    "value": "6"
+                },
+                {
+                    "key": "8",
+                    "value": "7"
+                },
+                {
+                    "key": "9",
+                    "value": "8"
+                },
+                {
+                    "key": "10",
+                    "value": "9"
+                }
+            ]
+        },
+        "extra_data": {
+            "behavior": "single_selection",
+            "label": "Final de placa",
+            "presentation": "submenu"
+        },
+        "filter_extra_data": {
+            "filter_ui": {
+                "behavior": "multi_selection",
+                "label": "Final de placa",
+                "presentation": "checkbox"
+            }
+        },
+        "filter_datasource": {
+            "type": "local",
+            "values": [
+                {
+                    "key": "1",
+                    "value": "0",
+                    "qs_value": "1",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "2",
+                    "value": "1",
+                    "qs_value": "2",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "3",
+                    "value": "2",
+                    "qs_value": "3",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "4",
+                    "value": "3",
+                    "qs_value": "4",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "5",
+                    "value": "4",
+                    "qs_value": "5",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "6",
+                    "value": "5",
+                    "qs_value": "6",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "7",
+                    "value": "6",
+                    "qs_value": "7",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "8",
+                    "value": "7",
+                    "qs_value": "8",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "9",
+                    "value": "8",
+                    "qs_value": "9",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "10",
+                    "value": "9",
+                    "qs_value": "10",
+                    "friendly_path": ""
+                }
+            ]
+        },
+        "rules": [],
+        "insertable": true,
+        "filterable": true,
+        "categories": null,
+        "type": "int"
+    },
+    {
+        "code": "fuel",
+        "param_key": "fuel",
+        "datasource": {
+            "type": "local",
+            "values": [
+                {
+                    "key": "1",
+                    "value": "Gasolina"
+                },
+                {
+                    "key": "2",
+                    "value": "Álcool"
+                },
+                {
+                    "key": "3",
+                    "value": "Flex"
+                },
+                {
+                    "key": "5",
+                    "value": "Diesel"
+                },
+                {
+                    "key": "6",
+                    "value": "Híbrido"
+                },
+                {
+                    "key": "7",
+                    "value": "Elétrico"
+                }
+            ]
+        },
+        "extra_data": {
+            "behavior": "single_selection",
+            "label": "Combustível",
+            "presentation": "submenu"
+        },
+        "filter_extra_data": {
+            "filter_ui": {
+                "behavior": "multi_selection",
+                "label": "Combustível",
+                "presentation": "checkbox"
+            }
+        },
+        "filter_datasource": {
+            "type": "local",
+            "values": [
+                {
+                    "key": "1",
+                    "value": "Gasolina",
+                    "qs_value": "1",
+                    "friendly_path": "gasolina"
+                },
+                {
+                    "key": "2",
+                    "value": "Álcool",
+                    "qs_value": "2",
+                    "friendly_path": "alcool"
+                },
+                {
+                    "key": "3",
+                    "value": "Flex",
+                    "qs_value": "3",
+                    "friendly_path": "flex"
+                },
+                {
+                    "key": "5",
+                    "value": "Diesel",
+                    "qs_value": "5",
+                    "friendly_path": "diesel"
+                },
+                {
+                    "key": "6",
+                    "value": "Híbrido",
+                    "qs_value": "6",
+                    "friendly_path": "hibrido"
+                },
+                {
+                    "key": "7",
+                    "value": "Elétrico",
+                    "qs_value": "7",
+                    "friendly_path": "eletrico"
+                }
+            ]
+        },
+        "rules": [],
+        "insertable": true,
+        "filterable": true,
+        "categories": null,
+        "type": "int"
+    },
+    {
+        "code": "cartype",
+        "param_key": "cartype",
+        "datasource": {
+            "type": "local",
+            "values": [
+                {
+                    "key": "6",
+                    "value": "Buggy"
+                },
+                {
+                    "key": "10",
+                    "value": "Caminhão Leve"
+                },
+                {
+                    "key": "2",
+                    "value": "Conversível"
+                },
+                {
+                    "key": "11",
+                    "value": "Coupé"
+                },
+                {
+                    "key": "9",
+                    "value": "Hatch"
+                },
+                {
+                    "key": "12",
+                    "value": "Perua"
+                },
+                {
+                    "key": "3",
+                    "value": "Pick-up"
+                },
+                {
+                    "key": "8",
+                    "value": "Sedã"
+                },
+                {
+                    "key": "5",
+                    "value": "SUV"
+                },
+                {
+                    "key": "7",
+                    "value": "Van/Utilitário"
+                }
+            ]
+        },
+        "extra_data": {
+            "behavior": "single_selection",
+            "label": "Tipo de veículo",
+            "presentation": "submenu"
+        },
+        "filter_extra_data": {
+            "filter_ui": {
+                "behavior": "multi_selection",
+                "label": "Tipo",
+                "presentation": "checkbox"
+            }
+        },
+        "filter_datasource": {
+            "type": "local",
+            "values": [
+                {
+                    "key": "6",
+                    "value": "Buggy",
+                    "qs_value": "6",
+                    "friendly_path": "buggy"
+                },
+                {
+                    "key": "10",
+                    "value": "Caminhão Leve",
+                    "qs_value": "10",
+                    "friendly_path": "caminhao-leve"
+                },
+                {
+                    "key": "2",
+                    "value": "Conversível",
+                    "qs_value": "2",
+                    "friendly_path": "conversivel"
+                },
+                {
+                    "key": "11",
+                    "value": "Coupé",
+                    "qs_value": "11",
+                    "friendly_path": "coupe"
+                },
+                {
+                    "key": "9",
+                    "value": "Hatch",
+                    "qs_value": "9",
+                    "friendly_path": "hatch"
+                },
+                {
+                    "key": "12",
+                    "value": "Perua",
+                    "qs_value": "12",
+                    "friendly_path": "perua"
+                },
+                {
+                    "key": "3",
+                    "value": "Pick-up",
+                    "qs_value": "3",
+                    "friendly_path": "pick-up"
+                },
+                {
+                    "key": "8",
+                    "value": "Sedã",
+                    "qs_value": "8",
+                    "friendly_path": "seda"
+                },
+                {
+                    "key": "5",
+                    "value": "SUV",
+                    "qs_value": "5",
+                    "friendly_path": "suv"
+                },
+                {
+                    "key": "7",
+                    "value": "Van/Utilitário",
+                    "qs_value": "7",
+                    "friendly_path": "van-utilitario"
+                }
+            ]
+        },
+        "rules": [],
+        "insertable": true,
+        "filterable": true,
+        "categories": null,
+        "type": "range"
+    },
+    {
+        "code": "carcolor",
+        "param_key": "carcolor",
+        "datasource": {
+            "type": "local",
+            "values": [
+                {
+                    "key": "7",
+                    "value": "Amarelo"
+                },
+                {
+                    "key": "6",
+                    "value": "Azul"
+                },
+                {
+                    "key": "2",
+                    "value": "Branco"
+                },
+                {
+                    "key": "5",
+                    "value": "Cinza"
+                },
+                {
+                    "key": "9",
+                    "value": "Laranja"
+                },
+                {
+                    "key": "3",
+                    "value": "Prata"
+                },
+                {
+                    "key": "1",
+                    "value": "Preto"
+                },
+                {
+                    "key": "8",
+                    "value": "Verde"
+                },
+                {
+                    "key": "4",
+                    "value": "Vermelho"
+                },
+                {
+                    "key": "10",
+                    "value": "Outra"
+                }
+            ]
+        },
+        "extra_data": {
+            "behavior": "single_selection",
+            "label": "Cor",
+            "presentation": "submenu"
+        },
+        "filter_extra_data": {
+            "filter_ui": {
+                "behavior": "multi_selection",
+                "label": "Cor",
+                "presentation": "checkbox"
+            }
+        },
+        "filter_datasource": {
+            "type": "local",
+            "values": [
+                {
+                    "key": "7",
+                    "value": "Amarelo",
+                    "qs_value": "7",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "6",
+                    "value": "Azul",
+                    "qs_value": "6",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "2",
+                    "value": "Branco",
+                    "qs_value": "2",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "5",
+                    "value": "Cinza",
+                    "qs_value": "5",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "9",
+                    "value": "Laranja",
+                    "qs_value": "9",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "3",
+                    "value": "Prata",
+                    "qs_value": "3",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "1",
+                    "value": "Preto",
+                    "qs_value": "1",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "8",
+                    "value": "Verde",
+                    "qs_value": "8",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "4",
+                    "value": "Vermelho",
+                    "qs_value": "4",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "10",
+                    "value": "Outra",
+                    "qs_value": "10",
+                    "friendly_path": ""
+                }
+            ]
+        },
+        "rules": [],
+        "insertable": true,
+        "filterable": true,
+        "categories": null,
+        "type": "range"
+    },
+    {
+        "code": "doors",
+        "param_key": "doors",
+        "datasource": {
+            "type": "local",
+            "values": [
+                {
+                    "key": "1",
+                    "value": "2 portas"
+                },
+                {
+                    "key": "2",
+                    "value": "4 portas"
+                },
+                {
+                    "key": "3",
+                    "value": "3 portas"
+                }
+            ]
+        },
+        "extra_data": {
+            "behavior": "single_selection",
+            "label": "Portas",
+            "presentation": "pill"
+        },
+        "filter_extra_data": {
+            "filter_ui": {
+                "behavior": "multi_selection",
+                "label": "Portas",
+                "presentation": "checkbox"
+            }
+        },
+        "filter_datasource": {
+            "type": "local",
+            "values": [
+                {
+                    "key": "1",
+                    "value": "2 portas",
+                    "qs_value": "1",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "2",
+                    "value": "4 portas",
+                    "qs_value": "2",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "3",
+                    "value": "3 portas",
+                    "qs_value": "3",
+                    "friendly_path": ""
+                }
+            ]
+        },
+        "rules": [],
+        "insertable": true,
+        "filterable": true,
+        "categories": null,
+        "type": "int"
+    },
+    {
+        "code": "car_features",
+        "param_key": "car_features",
+        "datasource": {
+            "type": "local",
+            "values": [
+                {
+                    "key": "5",
+                    "value": "Air bag"
+                },
+                {
+                    "key": "1",
+                    "value": "Ar condicionado"
+                },
+                {
+                    "key": "6",
+                    "value": "Alarme"
+                },
+                {
+                    "key": "11",
+                    "value": "Bancos de couro"
+                },
+                {
+                    "key": "10",
+                    "value": "Blindado"
+                },
+                {
+                    "key": "9",
+                    "value": "Câmera de ré"
+                },
+                {
+                    "key": "12",
+                    "value": "Computador de bordo"
+                },
+                {
+                    "key": "13",
+                    "value": "Conexão USB"
+                },
+                {
+                    "key": "17",
+                    "value": "Controle automático de velocidade"
+                },
+                {
+                    "key": "15",
+                    "value": "Interface bluetooth"
+                },
+                {
+                    "key": "16",
+                    "value": "Navegador GPS"
+                },
+                {
+                    "key": "18",
+                    "value": "Rodas de liga leve"
+                },
+                {
+                    "key": "8",
+                    "value": "Sensor de ré"
+                },
+                {
+                    "key": "7",
+                    "value": "Som"
+                },
+                {
+                    "key": "19",
+                    "value": "Teto solar"
+                },
+                {
+                    "key": "20",
+                    "value": "Tração 4x4"
+                },
+                {
+                    "key": "4",
+                    "value": "Trava elétrica"
+                },
+                {
+                    "key": "3",
+                    "value": "Vidro elétrico"
+                },
+                {
+                    "key": "14",
+                    "value": "Volante multifuncional"
+                }
+            ]
+        },
+        "extra_data": {
+            "behavior": "multi_selection",
+            "label": "Itens de série e opcionais do seu veículo",
+            "presentation": "checkbox"
+        },
+        "filter_extra_data": {
+            "filter_ui": {
+                "behavior": "multi_selection",
+                "label": "Opcionais",
+                "presentation": "checkbox"
+            }
+        },
+        "filter_datasource": {
+            "type": "local",
+            "values": [
+                {
+                    "key": "5",
+                    "value": "Air bag",
+                    "qs_value": "5",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "1",
+                    "value": "Ar condicionado",
+                    "qs_value": "1",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "6",
+                    "value": "Alarme",
+                    "qs_value": "6",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "11",
+                    "value": "Bancos de couro",
+                    "qs_value": "11",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "10",
+                    "value": "Blindado",
+                    "qs_value": "10",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "9",
+                    "value": "Câmera de ré",
+                    "qs_value": "9",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "12",
+                    "value": "Computador de bordo",
+                    "qs_value": "12",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "13",
+                    "value": "Conexão USB",
+                    "qs_value": "13",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "17",
+                    "value": "Controle automático de velocidade",
+                    "qs_value": "17",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "15",
+                    "value": "Interface bluetooth",
+                    "qs_value": "15",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "16",
+                    "value": "Navegador GPS",
+                    "qs_value": "16",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "18",
+                    "value": "Rodas de liga leve",
+                    "qs_value": "18",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "8",
+                    "value": "Sensor de ré",
+                    "qs_value": "8",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "7",
+                    "value": "Som",
+                    "qs_value": "7",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "19",
+                    "value": "Teto solar",
+                    "qs_value": "19",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "20",
+                    "value": "Tração 4x4",
+                    "qs_value": "20",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "4",
+                    "value": "Trava elétrica",
+                    "qs_value": "4",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "3",
+                    "value": "Vidro elétrico",
+                    "qs_value": "3",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "14",
+                    "value": "Volante multifuncional",
+                    "qs_value": "14",
+                    "friendly_path": ""
+                }
+            ]
+        },
+        "rules": [],
+        "insertable": true,
+        "filterable": true,
+        "categories": null,
+        "type": "checklist"
+    },
+    {
+        "code": "vehicle_tag",
+        "param_key": "vehicle_tag",
+        "extra_data": {
+            "behavior": "text",
+            "label": "Placa do carro"
+        },
+        "rules": [],
+        "insertable": true,
+        "filterable": false,
+        "categories": null,
+        "type": "string"
+    },
+    {
+        "code": "gnv_kit",
+        "param_key": "gnv_kit",
+        "datasource": {
+            "type": "local",
+            "values": [
+                {
+                    "key": "1",
+                    "value": "Sim"
+                },
+                {
+                    "key": "2",
+                    "value": "Não"
+                }
+            ]
+        },
+        "extra_data": {
+            "behavior": "single_selection",
+            "label": "Kit GNV",
+            "presentation": "submenu"
+        },
+        "filter_datasource": {
+            "type": "local",
+            "values": [
+                {
+                    "key": "1",
+                    "value": "Sim",
+                    "qs_value": "1",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "2",
+                    "value": "Não",
+                    "qs_value": "2",
+                    "friendly_path": ""
+                }
+            ]
+        },
+        "rules": [],
+        "insertable": true,
+        "filterable": false,
+        "categories": null,
+        "type": "range"
+    },
+    {
+        "code": "car_steering",
+        "param_key": "car_steering",
+        "datasource": {
+            "type": "local",
+            "values": [
+                {
+                    "key": "1",
+                    "value": "Hidráulica"
+                },
+                {
+                    "key": "2",
+                    "value": "Elétrica"
+                },
+                {
+                    "key": "3",
+                    "value": "Mecânica"
+                },
+                {
+                    "key": "5",
+                    "value": "Eletro-hidráulica"
+                }
+            ]
+        },
+        "extra_data": {
+            "behavior": "single_selection",
+            "label": "Direção",
+            "presentation": "submenu"
+        },
+        "filter_extra_data": {
+            "filter_ui": {
+                "behavior": "multi_selection",
+                "label": "Direção",
+                "presentation": "checkbox"
+            }
+        },
+        "filter_datasource": {
+            "type": "local",
+            "values": [
+                {
+                    "key": "1",
+                    "value": "Hidráulica",
+                    "qs_value": "1",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "2",
+                    "value": "Elétrica",
+                    "qs_value": "2",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "3",
+                    "value": "Mecânica",
+                    "qs_value": "3",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "5",
+                    "value": "Eletro-hidráulica",
+                    "qs_value": "5",
+                    "friendly_path": ""
+                }
+            ]
+        },
+        "rules": [],
+        "insertable": true,
+        "filterable": false,
+        "categories": null,
+        "type": "int"
+    },
+    {
+        "code": "financial",
+        "param_key": "financial",
+        "datasource": {
+            "type": "local",
+            "values": [
+                {
+                    "key": "1",
+                    "value": "Financiado"
+                },
+                {
+                    "key": "2",
+                    "value": "IPVA Pago"
+                },
+                {
+                    "key": "3",
+                    "value": "Com multas"
+                },
+                {
+                    "key": "4",
+                    "value": "De leilão"
+                }
+            ]
+        },
+        "extra_data": {
+            "behavior": "multi_selection",
+            "label": "Estado financeiro",
+            "presentation": "checkbox"
+        },
+        "filter_extra_data": {
+            "filter_ui": {
+                "behavior": "multi_selection",
+                "label": "Estado financeiro",
+                "presentation": "checkbox"
+            }
+        },
+        "filter_datasource": {
+            "type": "local",
+            "values": [
+                {
+                    "key": "1",
+                    "value": "Financiado",
+                    "qs_value": "1",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "2",
+                    "value": "IPVA Pago",
+                    "qs_value": "2",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "3",
+                    "value": "Com multas",
+                    "qs_value": "3",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "4",
+                    "value": "De leilão",
+                    "qs_value": "4",
+                    "friendly_path": ""
+                }
+            ]
+        },
+        "rules": [],
+        "insertable": true,
+        "filterable": false,
+        "categories": null,
+        "type": "checklist"
+    },
+    {
+        "code": "owner_manual",
+        "param_key": "owner_manual",
+        "datasource": {
+            "type": "local",
+            "values": [
+                {
+                    "key": "1",
+                    "value": "Sim"
+                },
+                {
+                    "key": "2",
+                    "value": "Não"
+                }
+            ]
+        },
+        "extra_data": {
+            "behavior": "single_selection",
+            "label": "Com manual",
+            "presentation": "submenu"
+        },
+        "filter_datasource": {
+            "type": "local",
+            "values": [
+                {
+                    "key": "1",
+                    "value": "Sim",
+                    "qs_value": "1",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "2",
+                    "value": "Não",
+                    "qs_value": "2",
+                    "friendly_path": ""
+                }
+            ]
+        },
+        "rules": [],
+        "insertable": true,
+        "filterable": false,
+        "categories": null,
+        "type": "int"
+    },
+    {
+        "code": "extra_key",
+        "param_key": "extra_key",
+        "datasource": {
+            "type": "local",
+            "values": [
+                {
+                    "key": "1",
+                    "value": "Sim"
+                },
+                {
+                    "key": "2",
+                    "value": "Não"
+                }
+            ]
+        },
+        "extra_data": {
+            "behavior": "single_selection",
+            "label": "Chave reserva",
+            "presentation": "submenu"
+        },
+        "filter_datasource": {
+            "type": "local",
+            "values": [
+                {
+                    "key": "1",
+                    "value": "Sim",
+                    "qs_value": "1",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "2",
+                    "value": "Não",
+                    "qs_value": "2",
+                    "friendly_path": ""
+                }
+            ]
+        },
+        "rules": [],
+        "insertable": true,
+        "filterable": false,
+        "categories": null,
+        "type": "int"
+    },
+    {
+        "code": "dealership_review",
+        "param_key": "dealership_review",
+        "datasource": {
+            "type": "local",
+            "values": [
+                {
+                    "key": "1",
+                    "value": "Sim"
+                },
+                {
+                    "key": "2",
+                    "value": "Não"
+                }
+            ]
+        },
+        "extra_data": {
+            "behavior": "single_selection",
+            "label": "Revisões feitas em concessionária",
+            "presentation": "submenu"
+        },
+        "filter_extra_data": {
+            "filter_ui": {
+                "behavior": "multi_selection",
+                "label": "Revisões feitas em concessionária",
+                "presentation": "checkbox"
+            },
+            "label": "Revisões feitas em concessionária",
+            "presentation": "checkbox"
+        },
+        "filter_datasource": {
+            "type": "local",
+            "values": [
+                {
+                    "key": "1",
+                    "value": "Sim",
+                    "qs_value": "1",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "2",
+                    "value": "Não",
+                    "qs_value": "2",
+                    "friendly_path": ""
+                }
+            ]
+        },
+        "rules": [],
+        "insertable": true,
+        "filterable": false,
+        "categories": null,
+        "type": "int"
+    },
+    {
+        "code": "warranty",
+        "param_key": "warranty",
+        "datasource": {
+            "type": "local",
+            "values": [
+                {
+                    "key": "1",
+                    "value": "Sim"
+                },
+                {
+                    "key": "2",
+                    "value": "Não"
+                }
+            ]
+        },
+        "extra_data": {
+            "behavior": "single_selection",
+            "label": "Com garantia",
+            "presentation": "submenu"
+        },
+        "filter_datasource": {
+            "type": "local",
+            "values": [
+                {
+                    "key": "1",
+                    "value": "Sim",
+                    "qs_value": "1",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "2",
+                    "value": "Não",
+                    "qs_value": "2",
+                    "friendly_path": ""
+                }
+            ]
+        },
+        "rules": [],
+        "insertable": true,
+        "filterable": false,
+        "categories": null,
+        "type": "int"
+    },
+    {
+        "code": "owner",
+        "param_key": "owner",
+        "datasource": {
+            "type": "local",
+            "values": [
+                {
+                    "key": "1",
+                    "value": "Sim"
+                },
+                {
+                    "key": "2",
+                    "value": "Não"
+                }
+            ]
+        },
+        "extra_data": {
+            "behavior": "single_selection",
+            "label": "Único dono",
+            "presentation": "pill"
+        },
+        "filter_extra_data": {
+            "filter_ui": {
+                "behavior": "single_selection",
+                "label": "Único Dono",
+                "placeholder": "Selecione",
+                "presentation": "selection"
+            }
+        },
+        "filter_datasource": {
+            "type": "local",
+            "values": [
+                {
+                    "key": "1",
+                    "value": "Sim",
+                    "qs_value": "1",
+                    "friendly_path": ""
+                },
+                {
+                    "key": "2",
+                    "value": "Não",
+                    "qs_value": "2",
+                    "friendly_path": ""
+                }
+            ]
+        },
+        "rules": [],
+        "insertable": true,
+        "filterable": false,
+        "categories": null,
+        "type": "range"
+    },
+    {
+        "code": "video_url",
+        "param_key": "video_url",
+        "datasource": {},
+        "extra_data": {
+            "behavior": "text",
+            "label": "Link do vídeo no YouTube",
+            "presentation": "textfield"
+        },
+        "rules": [
+            {
+                "message": "Formato inválido. Era esperada uma URL do YouTube",
+                "pattern": "^(https?\\:\\/\\/)?((www\\.)?youtube\\.com|youtu\\.be)\\/.+$"
+            }
+        ],
+        "insertable": true,
+        "filterable": false,
+        "categories": null,
+        "type": "string"
+    },
+    {
+        "code": "zero_km",
+        "param_key": "zero_km",
+        "datasource": {
+            "type": "local",
+            "values": [
+                {
+                    "key": "0",
+                    "value": "Não"
+                },
+                {
+                    "key": "1",
+                    "value": "Sim"
+                }
+            ]
+        },
+        "extra_data": {
+            "behavior": "single_selection",
+            "label": "0KM",
+            "presentation": "radio"
+        },
+        "rules": [
+            {
+                "required": "false"
+            }
+        ],
+        "insertable": true,
+        "filterable": false,
+        "categories": null,
+        "type": "int"
+    }
+]

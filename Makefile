@@ -16,9 +16,10 @@ mkdir:
 perm:
 	- sudo find . -type d -exec chmod 775 {} \;
 	- sudo find . -type f -exec chmod 664 {} \;
-	- sudo chown -R 82:$$USER .
+	- sudo chown -R $$USER:82 .
 	- sudo chmod +x node_modules/.bin/vite
-	- docker compose exec lr_app chmod 600 storage/oauth-private.key
+	- sudo chmod 660 storage/oauth-private.key
+	- sudo chmod 660 storage/oauth-public.key
 	- docker compose exec lr_database chown -R mysql:mysql /var/lib/mysql
 
 perm_db:

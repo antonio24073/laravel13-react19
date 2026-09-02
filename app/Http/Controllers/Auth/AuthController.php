@@ -6,11 +6,18 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
+
+    public static function getUserAuthenticated(): ?User
+    {
+        return Auth::guard('api')->user();
+    }
+
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [

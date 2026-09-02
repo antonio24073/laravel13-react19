@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Vehicle_brand;
-use App\Models\Vehicle_model;
-use App\Models\Vehicle_version;
+use App\Models\Vehicle_brands;
+use App\Models\Vehicle_models;
+use App\Models\Vehicle_versions;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
@@ -14,6 +14,7 @@ use Illuminate\Console\Command;
 class ImportVehicles extends Command
 {
     /**
+     * Import vehicles from JSON files.
      * To be implemented. Instead you can dump the sql files in the dump/sql folder
      * 
      * for file in dump/sql/*.sql; do
@@ -52,13 +53,13 @@ class ImportVehicles extends Command
         }
 
         foreach ($vehicle_brand->brands as $brand) {
-            $vehicle_brand = Vehicle_brand::firstOrCreate([
+            $vehicle_brand = Vehicle_brands::firstOrCreate([
                 'label' => $brand->label,
                 'value' => $brand->value,
                 'vehicle_type_id' => $vehicle_type_id,
             ]);
             foreach ($brand->models as $model) {
-                $vehicle_model = Vehicle_model::firstOrCreate([
+                $vehicle_model = Vehicle_models::firstOrCreate([
                     'brand_id' => $vehicle_brand->value,
                     'label' => $model->label,
                     'value' => $model->value,
@@ -66,7 +67,7 @@ class ImportVehicles extends Command
                 ]);
 
                 foreach ($brand->values as $version) {
-                    Vehicle_version::firstOrCreate([
+                    Vehicle_versions::firstOrCreate([
                         'brand_id' => $vehicle_brand->value,
                         'model_id' => $vehicle_model->value,
                         'label' => $version->label,

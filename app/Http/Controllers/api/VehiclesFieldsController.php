@@ -12,9 +12,11 @@ use App\Models\Vehicle_features;
 use App\Models\Vehicle_financials;
 use App\Models\Vehicle_fuels;
 use App\Models\Vehicle_gearboxes;
+use App\Models\Vehicle_models;
 use App\Models\Vehicle_motorpowers;
 use App\Models\Vehicle_regdates;
 use App\Models\Vehicle_types;
+use App\Models\Vehicle_versions;
 use App\Models\Vehicles;
 use Illuminate\Http\Request;
 
@@ -36,6 +38,8 @@ class VehiclesFieldsController extends Controller
             'exchange' => Vehicle_exchanges::all(),
             'financial' => Vehicle_financials::all(),
             'cubiccms' => Vehicle_cubiccms::all(),
+            'models' => Vehicle_models::orderBy('label', 'asc')->get(),
+            'versions' => Vehicle_versions::orderBy('label', 'asc')->get(),
         ];
     }
 

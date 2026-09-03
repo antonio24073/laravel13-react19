@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\api\VehiclesController;
+use App\Http\Controllers\api\VehiclesFieldsController;
 use App\Http\Controllers\Auth\AuthController as AuthAuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -15,4 +16,5 @@ Route::post('/register', [AuthAuthController::class, 'store']);
 
 Route::apiResources([
     'vehicles' => VehiclesController::class,
+    'vehicles-fields' => VehiclesFieldsController::class,
 ]);

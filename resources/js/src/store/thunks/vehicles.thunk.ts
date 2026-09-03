@@ -36,7 +36,7 @@ export const getVehicle =
 
         try {
             const response = await HttpAuth.get(`/vehicles/${id}`);
-            const payload = response.data?.vehicle ?? response.data;
+            const payload = response.data;
 
             dispatch({
                 type: VEHICLE_SUCCESS,
@@ -59,7 +59,7 @@ export const createVehicle =
 
         try {
             const response = await HttpAuth.post("/vehicles", data);
-            const payload = response.data?.vehicle ?? response.data;
+            const payload = response.data;
 
             dispatch({
                 type: VEHICLE_CREATE_SUCCESS,
@@ -86,7 +86,7 @@ export const updateVehicle =
 
         try {
             const response = await HttpAuth.put(`/vehicles/${id}`, data);
-            const payload = response.data?.vehicle ?? response.data;
+            const payload = response.data;
 
             dispatch({
                 type: VEHICLE_UPDATE_SUCCESS,

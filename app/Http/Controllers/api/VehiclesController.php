@@ -44,7 +44,16 @@ class VehiclesController extends Controller
      */
     public function index()
     {
-        //
+        $user = AuthController::getUserAuthenticated();
+
+        $vehicles = Vehicles::with('vehicle_photos')
+            ->where('user_id', $user->id)
+            ->get();
+
+        return response()->json([
+            'vehicles' => $vehicles,
+            ...$this->getData(),
+        ]);
     }
 
     /**
@@ -54,11 +63,17 @@ class VehiclesController extends Controller
     {
         $user = AuthController::getUserAuthenticated();
 
-        $vehicle = Vehicles::with('vehicle_photos')->firstOrCreate([
+        $vehicle = Vehicles::create([
             'user_id' => $user->id,
-            'status' => 0
+            'status' => 0,
         ]);
-        return array_merge(['vehicle' => $vehicle], $this->getData());
+
+        $vehicle->load('vehicle_photos');
+
+        return response()->json([
+            'vehicle' => $vehicle,
+            ...$this->getData(),
+        ], 201);
     }
 
     /**
@@ -66,7 +81,16 @@ class VehiclesController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $user = AuthController::getUserAuthenticated();
+
+        $vehicle = Vehicles::with('vehicle_photos')
+            ->where('user_id', $user->id)
+            ->findOrFail($id);
+
+        return response()->json([
+            'vehicle' => $vehicle,
+            ...$this->getData(),
+        ]);
     }
 
     /**
@@ -74,7 +98,26 @@ class VehiclesController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $user = AuthController::getUserAuthenticated();
+
+        $vehicle = Vehicles::where('user_id', $user->id)
+            ->findOrFail($id);
+
+        $vehicle->update(
+            $request->except([
+                'id',
+                'user_id',
+                'created_at',
+                'updated_at',
+            ])
+        );
+
+        $vehicle->load('vehicle_photos');
+
+        return response()->json([
+            'vehicle' => $vehicle,
+            ...$this->getData(),
+        ]);
     }
 
     /**
@@ -82,6 +125,15 @@ class VehiclesController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $user = AuthController::getUserAuthenticated();
+
+        $vehicle = Vehicles::where('user_id', $user->id)
+            ->findOrFail($id);
+
+        $vehicle->delete();
+
+        return response()->json([
+            'message' => 'Vehicle deleted successfully.',
+        ]);
     }
 }

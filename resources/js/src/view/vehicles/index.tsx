@@ -72,15 +72,15 @@ export default function Vehicles() {
                     <CardContent sx={{ display: "grid", gridTemplateColumns: "72px 132px minmax(0, 1fr) 56px", gap: { xs: 1.5, sm: 3 }, alignItems: "center", p: { xs: 2, sm: 3 }, "&:last-child": { pb: { xs: 2, sm: 3 } } }}>
                       <Box sx={{ alignSelf: "stretch", display: "flex", flexDirection: "column", justifyContent: "center", borderRight: "1px solid", borderColor: "divider" }}>
                         <Typography variant="caption" color="text.secondary">ID</Typography>
-                        <Typography variant="h6" fontWeight={700}>{vehicle.id}</Typography>
+                        <Typography variant="h6">{vehicle.id}</Typography>
                       </Box>
                       <Box sx={{ height: 96, borderRadius: 1, bgcolor: "#172536", display: "flex", alignItems: "center", justifyContent: "center", color: "#d5e9f5" }}>
                         <MdDirectionsCar size={52} />
                       </Box>
                       <Box sx={{ minWidth: 0 }}>
-                        <Typography variant="overline" color="text.secondary" fontWeight={700}>{vehicle.name ?? "Veículo"}</Typography>
-                        <Typography variant="h6" fontWeight={700} noWrap>{vehicle.title ?? "Sem título"}</Typography>
-                        <Typography variant="h6" color="error.main" fontWeight={700} sx={{ mt: 1 }}>
+                        <Typography variant="overline" color="text.secondary" >{vehicle.name ?? "Veículo"}</Typography>
+                        <Typography variant="h6" noWrap>{vehicle.title ?? "Sem título"}</Typography>
+                        <Typography variant="h6" color="error.main"  sx={{ mt: 1 }}>
                           {vehicle.vehicle_price != null ? `R$ ${Number(vehicle.vehicle_price).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}` : "Preço não informado"}
                         </Typography>
                       </Box>

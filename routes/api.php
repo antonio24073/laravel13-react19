@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\api\uploads\VehicleUploadController;
 use App\Http\Controllers\api\VehiclesController;
 use App\Http\Controllers\api\VehiclesFieldsController;
 use App\Http\Controllers\Auth\AuthController as AuthAuthController;
@@ -16,5 +17,12 @@ Route::post('/register', [AuthAuthController::class, 'store']);
 
 Route::apiResources([
     'vehicles' => VehiclesController::class,
-    'vehicles-fields' => VehiclesFieldsController::class,
 ]);
+
+Route::apiResource('vehicles-fields', VehiclesFieldsController::class)
+    ->only(['index']);
+
+Route::group(['prefix' => 'uploads', 'middleware' => ['auth:api']], function () {
+    Route::resource('vehicle', VehicleUploadController::class)
+        ->only(['create', 'update', 'destroy']);
+});

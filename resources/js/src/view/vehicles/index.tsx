@@ -1,5 +1,6 @@
-import { useEffect } from "react";
-import { Button, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import { Box, Button, Card, CardContent, Divider, IconButton, Menu, MenuItem, Paper, Stack, Typography } from "@mui/material";
+import { MdDelete, MdDirectionsCar, MdEdit, MdMoreVert, MdOpenInNew } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import Header from "../header";
 import vehiclesAction from "../../store/actions/vehicles.action";
@@ -9,6 +10,8 @@ import type { RootState } from "../../store";
 export default function Vehicles() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
+  const [selectedVehicleId, setSelectedVehicleId] = useState<number | null>(null);
 
   const { vehicles, loading, error } = useAppSelector(
     (state: RootState) => state.vehicles
@@ -30,6 +33,18 @@ export default function Vehicles() {
     }
   };
 
+  const openMenu = (event: React.MouseEvent<HTMLElement>, id: number) => {
+    setMenuAnchor(event.currentTarget);
+    setSelectedVehicleId(id);
+  };
+
+  const closeMenu = () => {
+    setMenuAnchor(null);
+    setSelectedVehicleId(null);
+  };
+
+  const selectedVehicle = vehicles.find((vehicle) => vehicle.id === selectedVehicleId);
+
   return (
     <div>
       <Header title="Veículos" />
@@ -46,61 +61,51 @@ export default function Vehicles() {
         {error && <Typography color="error">{error}</Typography>}
 
         {!loading && !error && (
-          <TableContainer component={Paper}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>ID</TableCell>
-                  <TableCell>Nome</TableCell>
-                  <TableCell>Título</TableCell>
-                  <TableCell>Preço</TableCell>
-                  <TableCell>Status</TableCell>
-                  <TableCell align="right">Ações</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {vehicles.length === 0 ? (
-                  <TableRow>
-                    <TableCell colSpan={6} align="center">
-                      Nenhum veículo encontrado.
-                    </TableCell>
-                  </TableRow>
-                ) : (
-                  vehicles.map((vehicle) => (
-                    <TableRow key={vehicle.id}>
-                      <TableCell>{vehicle.id}</TableCell>
-                      <TableCell>{vehicle.name ?? "-"}</TableCell>
-                      <TableCell>{vehicle.title ?? "-"}</TableCell>
-                      <TableCell>
-                        {vehicle.vehicle_price != null ? `R$ ${vehicle.vehicle_price}` : "-"}
-                      </TableCell>
-                      <TableCell>{vehicle.status === 1 ? "Ativo" : "Inativo"}</TableCell>
-                      <TableCell align="right">
-                        <Stack className="d-flex flex-row justify-content-end align-items-center p-1">
-                          <Button
-                            size="small"
-                            variant="outlined"
-                            onClick={() => navigate(`/vehicles/${vehicle.id}/edit`)}
-                          >
-                            Editar
-                          </Button>
-                          <Button
-                            size="small"
-                            variant="contained"
-                            color="error"
-                            onClick={() => handleDelete(vehicle.id)}
-                          >
-                            Excluir
-                          </Button>
-                        </Stack>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
+          <Paper elevation={1} sx={{ overflow: "hidden" }}>
+            {vehicles.length === 0 ? (
+              <Typography sx={{ p: 4, textAlign: "center" }}>Nenhum veículo encontrado.</Typography>
+            ) : (
+              vehicles.map((vehicle, index) => (
+                <Box key={vehicle.id}>
+                  {index > 0 && <Divider />}
+                  <Card elevation={0} sx={{ borderRadius: 0 }}>
+                    <CardContent sx={{ display: "grid", gridTemplateColumns: "72px 132px minmax(0, 1fr) 56px", gap: { xs: 1.5, sm: 3 }, alignItems: "center", p: { xs: 2, sm: 3 }, "&:last-child": { pb: { xs: 2, sm: 3 } } }}>
+                      <Box sx={{ alignSelf: "stretch", display: "flex", flexDirection: "column", justifyContent: "center", borderRight: "1px solid", borderColor: "divider" }}>
+                        <Typography variant="caption" color="text.secondary">ID</Typography>
+                        <Typography variant="h6" fontWeight={700}>{vehicle.id}</Typography>
+                      </Box>
+                      <Box sx={{ height: 96, borderRadius: 1, bgcolor: "#172536", display: "flex", alignItems: "center", justifyContent: "center", color: "#d5e9f5" }}>
+                        <MdDirectionsCar size={52} />
+                      </Box>
+                      <Box sx={{ minWidth: 0 }}>
+                        <Typography variant="overline" color="text.secondary" fontWeight={700}>{vehicle.name ?? "Veículo"}</Typography>
+                        <Typography variant="h6" fontWeight={700} noWrap>{vehicle.title ?? "Sem título"}</Typography>
+                        <Typography variant="h6" color="error.main" fontWeight={700} sx={{ mt: 1 }}>
+                          {vehicle.vehicle_price != null ? `R$ ${Number(vehicle.vehicle_price).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}` : "Preço não informado"}
+                        </Typography>
+                      </Box>
+                      <IconButton aria-label={`Ações do veículo ${vehicle.id}`} onClick={(event) => openMenu(event, vehicle.id)}>
+                        <MdMoreVert />
+                      </IconButton>
+                    </CardContent>
+                  </Card>
+                </Box>
+              ))
+            )}
+          </Paper>
         )}
+
+        <Menu anchorEl={menuAnchor} open={Boolean(menuAnchor)} onClose={closeMenu}>
+          <MenuItem onClick={() => { closeMenu(); navigate(`/vehicles/${selectedVehicleId}`); }}>
+            <MdOpenInNew style={{ marginRight: 16 }} /> Visualizar
+          </MenuItem>
+          <MenuItem onClick={() => { closeMenu(); navigate(`/vehicles/${selectedVehicleId}/edit`); }}>
+            <MdEdit style={{ marginRight: 16 }} /> Editar
+          </MenuItem>
+          <MenuItem onClick={() => { if (selectedVehicle) void handleDelete(selectedVehicle.id); closeMenu(); }}>
+            <MdDelete style={{ marginRight: 16 }} /> Excluir
+          </MenuItem>
+        </Menu>
       </div>
     </div>
   );

@@ -6,5 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Vehicle_photos extends Model
 {
-    //
+    
+    protected $guarded = ['id'];
 }

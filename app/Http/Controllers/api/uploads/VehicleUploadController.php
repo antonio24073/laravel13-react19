@@ -12,29 +12,27 @@ use Intervention\Image\ImageManager;
 
 class VehicleUploadController extends Controller
 {
-    protected $user;
-
-    public function __contruct()
+    public function store(Request $request)
     {
-        $this->user = Auth()->guard('api')->user();
-    }
-
-    public function create(Request $request)
-    {
+        $user = $request->user('api');
         $file = $request->file('file');
+        if (!$file || !$file->isValid()) {
+            return response()->json(['success' => false, 'message' => 'Invalid file'], 422);
+        }
+
         $filename = md5(uniqid(time()));
         $extension = strrchr($file->getClientOriginalName(), '.');
         $completefilename = $filename . $extension;
 
-        $vehicle = Vehicles::where('id', $request->vehicle_id)
-            ->find($request->id);
+        $vehicle = Vehicles::where('user_id', $user->id)
+            ->find($request->vehicle_id);
         if (!$vehicle) {
             return response()->json(['success' => false, 'message' => 'Vehicle not found'], 404);
         }
 
-        if ($request->hasFile('file') && $file->isValid()) {
+        if ($request->hasFile('file')) {
             $photo = Vehicle_photos::create([
-                'user_id' => $this->user->id,
+                'user_id' => $user->id,
                 'vehicle_id' => $request->vehicle_id,
                 'img' => $completefilename
             ]);
@@ -44,14 +42,20 @@ class VehicleUploadController extends Controller
                     ->decode($file);
                 $image->scaleDown(width: 1000);
 
-                $file->move(public_path('uploads/vehicles/' . $this->user->id . '/' . $photo->vehicle_id), $completefilename);
+                $file->move(public_path('uploads/vehicles/' . $user->id . '/' . $photo->vehicle_id), $completefilename);
                 Storage::put(
-                    'uploads/vehicles/' . $this->user->id . '/' . $photo->vehicle_id . '/' . $completefilename,
+                    'uploads/vehicles/' . $user->id . '/' . $photo->vehicle_id . '/' . $completefilename,
                     (string) $image->encode(),
                     'public'
                 );
 
-                return response()->json(['success' => true, 'message' => 'File uploaded successfully', 'data' => $filename], 200);
+                return response()->json([
+                    'success' => true,
+                    'message' => 'File uploaded successfully',
+                    'data' => $filename,
+                    'photos' => [$completefilename],
+                    'photo' => $photo,
+                ], 200);
             }
         }
         return response()->json(['success' => false, 'message' => 'Error saving photo'], 500);
@@ -59,20 +63,32 @@ class VehicleUploadController extends Controller
 
     public function update(Request $request)
     {
+        $user = $request->user('api');
         foreach ($request->order as $order => $id) {
-            $position = Vehicle_photos::where('user_id', $this->user->id)->find($id);
-            $position->order = $order;
-            $position->save();
+            $position = Vehicle_photos::where('user_id', $user->id)->find($id);
+            if ($position) {
+                $position->order = $order;
+                $position->save();
+            }
         }
+
+        return response()->json([
+            'photos' => Vehicle_photos::where('user_id', $user->id)
+                ->where('vehicle_id', $request->route('vehicle'))
+                ->orderBy('order')
+                ->get()
+                ->values(),
+        ]);
     }
 
 
 
     public function destroy($id)
     {
-        $photo = Vehicle_photos::where('user_id', $this->user->id)->find($id);
+        $user = Auth()->guard('api')->user();
+        $photo = Vehicle_photos::where('user_id', $user->id)->find($id);
         if ($photo) {
-            $path = 'uploads/vehicles/' . $this->user->id . '/' . $photo->vehicle_id . '/' . $photo->img;
+            $path = 'uploads/vehicles/' . $user->id . '/' . $photo->vehicle_id . '/' . $photo->img;
             if(Storage::exists($path)) {
                 Storage::delete($path);
             }

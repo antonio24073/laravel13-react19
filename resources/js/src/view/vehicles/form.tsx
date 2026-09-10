@@ -10,14 +10,16 @@ import {
     TextField,
     Typography,
 } from "@mui/material";
-import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
+import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import type { Vehicle, VehiclePayload } from "../../models/vehicles.types";
+import { rootUrl } from "../../config/App";
 import vehiclesAction from "../../store/actions/vehicles.action";
 import vehiclesFieldsAction from "../../store/actions/vehicles-fields.action";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import type { RootState } from "../../store";
 import Header from "../header";
+import SortablePhotoUpload, { type SortablePhoto } from "../components/SortablePhotoUpload";
 
 type VehicleFormMode = "create" | "edit";
 
@@ -112,8 +114,15 @@ export default function VehicleForm({ mode }: { mode: VehicleFormMode }) {
     const fuelOptions = vehicleFields.fuel ?? [];
     const typeOptions = vehicleFields.vehicle_types ?? [];
     const featureOptions = (vehicleFields.features ?? []).map((item) => item.label ?? item.name ?? String(item.value ?? item.id ?? ""));
+    const vehiclePhotos = (selectedVehicle?.vehicle_photos ?? [])
+        .map<SortablePhoto>((photo) => ({
+            id: photo.id,
+            src: `${rootUrl}uploads/vehicles/${selectedVehicle?.user_id}/${selectedVehicle?.id}/${photo.img}`,
+            name: photo.img,
+        }));
 
     const [form, setForm] = useState<VehicleFormData>(emptyForm);
+    const formRef = useRef<VehicleFormData>(emptyForm);
     const [saving, setSaving] = useState(false);
     const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
 
@@ -128,16 +137,44 @@ export default function VehicleForm({ mode }: { mode: VehicleFormMode }) {
         }
 
         setForm(emptyForm);
+        formRef.current = emptyForm;
         setSelectedFeatures([]);
     }, [mode, id, dispatch]);
 
     useEffect(() => {
         if (mode === "edit" && selectedVehicle) {
-            setForm(parseVehicle(selectedVehicle));
+            const parsedVehicle = parseVehicle(selectedVehicle);
+            setForm(parsedVehicle);
+            formRef.current = parsedVehicle;
+
+            let savedFeatures: unknown = selectedVehicle.vehicle_features;
+            if (typeof savedFeatures === "string") {
+                try {
+                    savedFeatures = JSON.parse(savedFeatures) as Record<string, unknown>;
+                } catch {
+                    savedFeatures = null;
+                }
+            }
+
+            const featureValues = Array.isArray(savedFeatures)
+                ? savedFeatures
+                : savedFeatures && typeof savedFeatures === "object"
+                    ? Object.values(savedFeatures)
+                    : [];
+
+            setSelectedFeatures(featureValues.filter((feature): feature is string => typeof feature === "string"));
         }
     }, [mode, selectedVehicle]);
 
     const updateField = <K extends keyof VehicleFormData>(field: K, value: VehicleFormData[K]) => {
+        formRef.current = {
+            ...formRef.current,
+            [field]: value,
+        };
+    };
+
+    const updateSelectField = <K extends keyof VehicleFormData>(field: K, value: VehicleFormData[K]) => {
+        updateField(field, value);
         setForm((current) => ({
             ...current,
             [field]: value,
@@ -150,7 +187,12 @@ export default function VehicleForm({ mode }: { mode: VehicleFormMode }) {
         const value = event.target.value;
 
         if (field === "status" || field === "vehicle_price" || field === "vehicle_mileage") {
-            updateField(field, Number(value) as VehicleFormData[typeof field]);
+            const numericValue = Number(value) as VehicleFormData[typeof field];
+            updateField(field, numericValue);
+            setForm((current) => ({
+                ...current,
+                [field]: numericValue,
+            }));
             return;
         }
 
@@ -173,14 +215,21 @@ export default function VehicleForm({ mode }: { mode: VehicleFormMode }) {
         setSaving(true);
 
         try {
+            const formFields = { ...formRef.current } as VehicleFormData & {
+                photos?: unknown;
+                vehicle_photos?: unknown;
+            };
+            delete formFields.photos;
+            delete formFields.vehicle_photos;
+
             const payload: VehiclePayload = {
-                ...form,
-                name: form.name ?? "",
-                title: form.title ?? "",
-                description: form.description ?? "",
-                vehicle_price: Number(form.vehicle_price ?? 0),
-                vehicle_mileage: Number(form.vehicle_mileage ?? 0),
-                status: Number(form.status ?? 0),
+                ...formFields,
+                name: formFields.name ?? "",
+                title: formFields.title ?? "",
+                description: formFields.description ?? "",
+                vehicle_price: Number(formFields.vehicle_price ?? 0),
+                vehicle_mileage: Number(formFields.vehicle_mileage ?? 0),
+                status: Number(formFields.status ?? 0),
                 vehicle_features: selectedFeatures.length
                     ? selectedFeatures.reduce<Record<string, string>>((accumulator, feature, index) => {
                         accumulator[`feature_${index + 1}`] = feature;
@@ -203,6 +252,7 @@ export default function VehicleForm({ mode }: { mode: VehicleFormMode }) {
         }
     };
 
+
     return (
         <>
             <Header title={mode === "edit" ? "Editar veículo" : "Novo veículo"} />
@@ -210,7 +260,12 @@ export default function VehicleForm({ mode }: { mode: VehicleFormMode }) {
             <Box sx={{ background: "#f3f4f6", minHeight: "100vh", py: 4 }}>
                 <Box sx={{ maxWidth: 760, mx: "auto" }}>
                     <Paper sx={{ p: { xs: 2, md: 3 }, borderRadius: 2, boxShadow: "0 8px 24px rgba(0,0,0,0.06)" }}>
-                        <Stack spacing={3} component="form" onSubmit={handleSubmit}>
+                        <Stack
+                            key={`${mode}-${selectedVehicle?.id ?? "new"}-${selectedVehicle?.updated_at ?? ""}`}
+                            spacing={3}
+                            component="form"
+                            onSubmit={handleSubmit}
+                        >
                             <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 2 }}>
                                 <Typography variant="h5" sx={{ fontWeight: 700, color: "#1f2937" }}>
                                     Edite seu anúncio
@@ -227,7 +282,7 @@ export default function VehicleForm({ mode }: { mode: VehicleFormMode }) {
                                     Título
                                 </Typography>
                                 <TextField
-                                    value={form.title ?? ""}
+                                    defaultValue={form.title ?? ""}
                                     onChange={handleTextChange("title")}
                                     placeholder="Toyota Corolla S 1.8 16V Flex Aut. 2003"
                                 />
@@ -238,7 +293,7 @@ export default function VehicleForm({ mode }: { mode: VehicleFormMode }) {
                                     Descrição
                                 </Typography>
                                 <TextField
-                                    value={form.description ?? ""}
+                                    defaultValue={form.description ?? ""}
                                     onChange={handleTextChange("description")}
                                     multiline
                                     minRows={4}
@@ -251,7 +306,7 @@ export default function VehicleForm({ mode }: { mode: VehicleFormMode }) {
                                     Placa do carro
                                 </Typography>
                                 <TextField
-                                    value={form.tag_id ?? ""}
+                                    defaultValue={form.tag_id ?? ""}
                                     onChange={(event) => updateField("tag_id", Number(event.target.value) || null)}
                                     placeholder="DLF123"
                                 />
@@ -262,7 +317,7 @@ export default function VehicleForm({ mode }: { mode: VehicleFormMode }) {
                                     select
                                     label="Marca"
                                     value={form.vehicle_brand ?? ""}
-                                    onChange={(event) => updateField("vehicle_brand", Number(event.target.value))}
+                                    onChange={(event) => updateSelectField("vehicle_brand", Number(event.target.value))}
                                 >
                                     {brandOptions.map((brand, index) => (
                                         <MenuItem key={brand} value={index + 1}>{brand}</MenuItem>
@@ -273,7 +328,7 @@ export default function VehicleForm({ mode }: { mode: VehicleFormMode }) {
                                     select
                                     label="Modelo"
                                     value={form.vehicle_model ?? ""}
-                                    onChange={(event) => updateField("vehicle_model", Number(event.target.value))}
+                                    onChange={(event) => updateSelectField("vehicle_model", Number(event.target.value))}
                                 >
                                     {modelOptions.map((model: Record<string, unknown>, index: number) => (
                                         <MenuItem key={String(model.id ?? model.value ?? index)} value={Number(model.id ?? index + 1)}>
@@ -288,7 +343,7 @@ export default function VehicleForm({ mode }: { mode: VehicleFormMode }) {
                                     select
                                     label="Ano do veículo"
                                     value={form.vehicle_regdate ?? ""}
-                                    onChange={(event) => updateField("vehicle_regdate", Number(event.target.value))}
+                                    onChange={(event) => updateSelectField("vehicle_regdate", Number(event.target.value))}
                                 >
                                     {yearOptions.map((year: Record<string, unknown>, index: number) => (
                                         <MenuItem key={String(year.id ?? year.value ?? index)} value={Number(year.id ?? index + 1)}>
@@ -301,7 +356,7 @@ export default function VehicleForm({ mode }: { mode: VehicleFormMode }) {
                                     select
                                     label="Versão"
                                     value={form.vehicle_version ?? ""}
-                                    onChange={(event) => updateField("vehicle_version", Number(event.target.value))}
+                                    onChange={(event) => updateSelectField("vehicle_version", Number(event.target.value))}
                                 >
                                     {versionOptions.map((version: Record<string, unknown>, index: number) => (
                                         <MenuItem key={String(version.id ?? version.value ?? index)} value={Number(version.id ?? index + 1)}>
@@ -316,7 +371,7 @@ export default function VehicleForm({ mode }: { mode: VehicleFormMode }) {
                                     select
                                     label="Câmbio"
                                     value={form.vehicle_gearbox ?? ""}
-                                    onChange={(event) => updateField("vehicle_gearbox", Number(event.target.value))}
+                                    onChange={(event) => updateSelectField("vehicle_gearbox", Number(event.target.value))}
                                 >
                                     {gearboxOptions.map((gearbox: Record<string, unknown>, index: number) => (
                                         <MenuItem key={String(gearbox.id ?? gearbox.value ?? index)} value={Number(gearbox.id ?? index + 1)}>
@@ -329,7 +384,7 @@ export default function VehicleForm({ mode }: { mode: VehicleFormMode }) {
                                     select
                                     label="Direção"
                                     value={form.vehicle_steering ?? ""}
-                                    onChange={(event) => updateField("vehicle_steering", Number(event.target.value))}
+                                    onChange={(event) => updateSelectField("vehicle_steering", Number(event.target.value))}
                                 >
                                     {steeringOptions.map((steering: Record<string, unknown>, index: number) => (
                                         <MenuItem key={String(steering.id ?? steering.value ?? index)} value={Number(steering.id ?? index + 1)}>
@@ -344,7 +399,7 @@ export default function VehicleForm({ mode }: { mode: VehicleFormMode }) {
                                     select
                                     label="Potência"
                                     value={form.vehicle_motorpower ?? ""}
-                                    onChange={(event) => updateField("vehicle_motorpower", Number(event.target.value))}
+                                    onChange={(event) => updateSelectField("vehicle_motorpower", Number(event.target.value))}
                                 >
                                     {powerOptions.map((power: Record<string, unknown>, index: number) => (
                                         <MenuItem key={String(power.id ?? power.value ?? index)} value={Number(power.id ?? index + 1)}>
@@ -357,7 +412,7 @@ export default function VehicleForm({ mode }: { mode: VehicleFormMode }) {
                                     select
                                     label="Portas"
                                     value={form.vehicle_doors ?? ""}
-                                    onChange={(event) => updateField("vehicle_doors", Number(event.target.value))}
+                                    onChange={(event) => updateSelectField("vehicle_doors", Number(event.target.value))}
                                 >
                                     {doorsOptions.map((door: Record<string, unknown>, index: number) => (
                                         <MenuItem key={String(door.id ?? door.value ?? index)} value={Number(door.id ?? index + 1)}>
@@ -372,7 +427,7 @@ export default function VehicleForm({ mode }: { mode: VehicleFormMode }) {
                                     select
                                     label="Combustível"
                                     value={form.vehicle_fuel ?? ""}
-                                    onChange={(event) => updateField("vehicle_fuel", Number(event.target.value))}
+                                    onChange={(event) => updateSelectField("vehicle_fuel", Number(event.target.value))}
                                 >
                                     {fuelOptions.map((fuel: Record<string, unknown>, index: number) => (
                                         <MenuItem key={String(fuel.id ?? fuel.value ?? index)} value={Number(fuel.id ?? index + 1)}>
@@ -385,7 +440,7 @@ export default function VehicleForm({ mode }: { mode: VehicleFormMode }) {
                                     select
                                     label="Cor"
                                     value={form.vehicle_color ?? ""}
-                                    onChange={(event) => updateField("vehicle_color", Number(event.target.value))}
+                                    onChange={(event) => updateSelectField("vehicle_color", Number(event.target.value))}
                                 >
                                     {colorOptions.map((color, index) => (
                                         <MenuItem key={color} value={index + 1}>{color}</MenuItem>
@@ -397,7 +452,7 @@ export default function VehicleForm({ mode }: { mode: VehicleFormMode }) {
                                 select
                                 label="Tipo do veículo"
                                 value={form.vehicle_type ?? ""}
-                                onChange={(event) => updateField("vehicle_type", Number(event.target.value))}
+                                onChange={(event) => updateSelectField("vehicle_type", Number(event.target.value))}
                             >
                                 {typeOptions.map((type: Record<string, unknown>, index: number) => (
                                     <MenuItem key={String(type.id ?? type.value ?? index)} value={Number(type.id ?? index + 1)}>
@@ -412,7 +467,7 @@ export default function VehicleForm({ mode }: { mode: VehicleFormMode }) {
                                 </Typography>
                                 <TextField
                                     type="number"
-                                    value={form.vehicle_mileage ?? 0}
+                                    value={form.vehicle_mileage ?? ""}
                                     onChange={handleTextChange("vehicle_mileage")}
                                 />
                             </Box>
@@ -445,7 +500,7 @@ export default function VehicleForm({ mode }: { mode: VehicleFormMode }) {
                                 </Typography>
                                 <TextField
                                     type="number"
-                                    value={form.vehicle_price ?? 0}
+                                    value={form.vehicle_price ?? ""}
                                     onChange={handleTextChange("vehicle_price")}
                                 />
                             </Box>
@@ -454,11 +509,14 @@ export default function VehicleForm({ mode }: { mode: VehicleFormMode }) {
                                 <Typography variant="caption" sx={{ fontWeight: 600, color: "#374151", mb: 1, display: "block" }}>
                                     Fotos
                                 </Typography>
-                                <Box sx={{ border: "1px dashed #cbd5e1", borderRadius: 2, p: 2, textAlign: "center", background: "#f8fafc" }}>
-                                    <Typography variant="body2" color="text.secondary">
-                                        Adicionar mais fotos
-                                    </Typography>
-                                </Box>
+                                <SortablePhotoUpload
+                                    photos={vehiclePhotos}
+                                    vehicleId={mode === "edit" && id ? Number(id) : undefined}
+                                    disabled={saving}
+                                />
+                                    <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+                                        {mode === "edit" ? "Adicione, arraste ou exclua as imagens do veículo." : "Salve o anúncio antes de adicionar fotos."}
+                                </Typography>
                             </Box>
 
                             <Box>
@@ -468,17 +526,17 @@ export default function VehicleForm({ mode }: { mode: VehicleFormMode }) {
                                 <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
                                     <TextField
                                         label="CEP"
-                                        value={form.zipCode ?? ""}
+                                        defaultValue={form.zipCode ?? ""}
                                         onChange={handleTextChange("zipCode")}
                                     />
                                     <TextField
                                         label="Cidade"
-                                        value={form.city ?? ""}
+                                        defaultValue={form.city ?? ""}
                                         onChange={handleTextChange("city")}
                                     />
                                     <TextField
                                         label="UF"
-                                        value={form.uf ?? ""}
+                                        defaultValue={form.uf ?? ""}
                                         onChange={handleTextChange("uf")}
                                     />
                                 </Stack>

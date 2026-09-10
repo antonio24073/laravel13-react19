@@ -37,6 +37,14 @@ export interface Vehicle {
     status: number;
     name: string | null;
 
+    photos: string[];
+    vehicle_photos?: Array<{
+        id: number;
+        img: string;
+        user_id?: number | null;
+        vehicle_id?: number | null;
+    }>;
+
     created_at: string | null;
     updated_at: string | null;
 }
@@ -83,7 +91,7 @@ export interface VehiclePayload {
 export interface VehiclesState {
     vehicles: Vehicle[];
     vehicle: Vehicle | null;
-
+    photos: string[];
     loading: boolean;
     error: string | null;
 }

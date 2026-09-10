@@ -78,7 +78,7 @@ export default function Vehicles() {
                         <MdDirectionsCar size={52} />
                       </Box>
                       <Box sx={{ minWidth: 0 }}>
-                        <Typography variant="overline" color="text.secondary" >{vehicle.name ?? "Veículo"}</Typography>
+                        <Typography variant="overline" color="text.secondary">{vehicle.name ?? "Veículo"}</Typography>
                         <Typography variant="h6" noWrap>{vehicle.title ?? "Sem título"}</Typography>
                         <Typography variant="h6" color="error.main"  sx={{ mt: 1 }}>
                           {vehicle.vehicle_price != null ? `R$ ${Number(vehicle.vehicle_price).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}` : "Preço não informado"}

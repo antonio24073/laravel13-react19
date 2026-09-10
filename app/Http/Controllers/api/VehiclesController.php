@@ -70,6 +70,8 @@ class VehiclesController extends Controller
                 'user_id',
                 'created_at',
                 'updated_at',
+                'photos',
+                'vehicle_photos',
             ])
         );
 

@@ -24,5 +24,5 @@ Route::apiResource('vehicles-fields', VehiclesFieldsController::class)
 
 Route::group(['prefix' => 'uploads', 'middleware' => ['auth:api']], function () {
     Route::resource('vehicle', VehicleUploadController::class)
-        ->only(['create', 'update', 'destroy']);
+    ->only(['store', 'update', 'destroy']);
 });

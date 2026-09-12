@@ -1,5 +1,6 @@
 import {
     Alert,
+    Autocomplete,
     Box,
     Button,
     Chip,
@@ -27,22 +28,7 @@ type VehicleFormData = VehiclePayload & {
     status?: number;
 };
 
-const brandOptions = ["Toyota", "Honda", "Volkswagen", "Chevrolet", "Ford", "Fiat"];
 const colorOptions = ["Branco", "Preto", "Prata", "Cinza", "Vermelho", "Azul"];
-
-const featureOptions = [
-    "Ar condicionado",
-    "Direção hidráulica",
-    "Vidro elétrico",
-    "Travas elétricas",
-    "Airbag",
-    "Alarme",
-    "Blindado",
-    "Câmera de ré",
-    "Controle de tração",
-    "GPS",
-    "Teto solar",
-];
 
 const emptyForm: VehicleFormData = {
     name: "",
@@ -104,9 +90,8 @@ export default function VehicleForm({ mode }: { mode: VehicleFormMode }) {
     const { loading, error } = useAppSelector((state: RootState) => state.vehicles);
     const { vehicleFields } = useAppSelector((state: RootState) => state.vehiclesFields);
 
-    const modelOptions = vehicleFields.models ?? [];
+    const brandOptions = vehicleFields.brands ?? [];
     const yearOptions = vehicleFields.regdate ?? [];
-    const versionOptions = vehicleFields.versions ?? [];
     const gearboxOptions = vehicleFields.gearbox ?? [];
     const steeringOptions = vehicleFields.car_steering ?? [];
     const powerOptions = vehicleFields.motorpower ?? [];
@@ -125,10 +110,63 @@ export default function VehicleForm({ mode }: { mode: VehicleFormMode }) {
     const formRef = useRef<VehicleFormData>(emptyForm);
     const [saving, setSaving] = useState(false);
     const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
+    const [brandSearch, setBrandSearch] = useState("");
+    const [modelSearch, setModelSearch] = useState("");
+    const [versionSearch, setVersionSearch] = useState("");
+
+    const modelOptions = (vehicleFields.models ?? []).filter((model) =>
+        form.vehicle_brand === null || Number(model.brand_id) === form.vehicle_brand
+    );
+    const versionOptions = (vehicleFields.versions ?? []).filter((version) =>
+        form.vehicle_model === null || Number(version.model_id) === form.vehicle_model
+    );
 
     useEffect(() => {
         dispatch(vehiclesFieldsAction.getVehiclesFields() as any);
     }, [dispatch]);
+
+    useEffect(() => {
+        const timeout = window.setTimeout(() => {
+            void dispatch(vehiclesFieldsAction.searchVehicleField("brands", {
+                search: brandSearch,
+                value: form.vehicle_brand,
+            }) as any);
+        }, 300);
+
+        return () => window.clearTimeout(timeout);
+    }, [brandSearch, form.vehicle_brand, dispatch]);
+
+    useEffect(() => {
+        if (form.vehicle_brand === null) {
+            return;
+        }
+
+        const timeout = window.setTimeout(() => {
+            void dispatch(vehiclesFieldsAction.searchVehicleField("models", {
+                search: modelSearch,
+                brand_id: form.vehicle_brand,
+                value: form.vehicle_model,
+            }) as any);
+        }, 300);
+
+        return () => window.clearTimeout(timeout);
+    }, [modelSearch, form.vehicle_brand, form.vehicle_model, dispatch]);
+
+    useEffect(() => {
+        if (form.vehicle_model === null) {
+            return;
+        }
+
+        const timeout = window.setTimeout(() => {
+            void dispatch(vehiclesFieldsAction.searchVehicleField("versions", {
+                search: versionSearch,
+                model_id: form.vehicle_model,
+                value: form.vehicle_version,
+            }) as any);
+        }, 300);
+
+        return () => window.clearTimeout(timeout);
+    }, [versionSearch, form.vehicle_model, form.vehicle_version, dispatch]);
 
     useEffect(() => {
         if (mode === "edit" && id) {
@@ -180,6 +218,12 @@ export default function VehicleForm({ mode }: { mode: VehicleFormMode }) {
             [field]: value,
         }));
     };
+
+    const fieldValue = (item: Record<string, unknown> | null) =>
+        item ? Number(item.value ?? item.id) : null;
+
+    const selectedOption = (options: Record<string, unknown>[], value: number | null | undefined) =>
+        options.find((option) => fieldValue(option) === value) ?? null;
 
     const handleTextChange = (field: keyof VehicleFormData) => (
         event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -265,6 +309,11 @@ export default function VehicleForm({ mode }: { mode: VehicleFormMode }) {
                             spacing={3}
                             component="form"
                             onSubmit={handleSubmit}
+                            onKeyDown={(event) => {
+                                if (event.key === "Enter" && event.target instanceof HTMLElement && event.target.closest(".MuiAutocomplete-root")) {
+                                    event.preventDefault();
+                                }
+                            }}
                         >
                             <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 2 }}>
                                 <Typography variant="h5" sx={{ fontWeight: 700, color: "#1f2937" }}>
@@ -301,45 +350,16 @@ export default function VehicleForm({ mode }: { mode: VehicleFormMode }) {
                                 />
                             </Box>
 
-                            <Box>
-                                <Typography variant="caption" sx={{ fontWeight: 600, color: "#374151", mb: 1, display: "block" }}>
-                                    Placa do carro
-                                </Typography>
+                            <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
                                 <TextField
+                                    sx={{ flex: 1 }}
+                                    label="Placa do carro"
                                     defaultValue={form.tag_id ?? ""}
                                     onChange={(event) => updateField("tag_id", Number(event.target.value) || null)}
                                     placeholder="DLF123"
                                 />
-                            </Box>
-
-                            <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
                                 <TextField
-                                    select
-                                    label="Marca"
-                                    value={form.vehicle_brand ?? ""}
-                                    onChange={(event) => updateSelectField("vehicle_brand", Number(event.target.value))}
-                                >
-                                    {brandOptions.map((brand, index) => (
-                                        <MenuItem key={brand} value={index + 1}>{brand}</MenuItem>
-                                    ))}
-                                </TextField>
-
-                                <TextField
-                                    select
-                                    label="Modelo"
-                                    value={form.vehicle_model ?? ""}
-                                    onChange={(event) => updateSelectField("vehicle_model", Number(event.target.value))}
-                                >
-                                    {modelOptions.map((model: Record<string, unknown>, index: number) => (
-                                        <MenuItem key={String(model.id ?? model.value ?? index)} value={Number(model.id ?? index + 1)}>
-                                            {optionLabel(model, `Modelo ${index + 1}`)}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Stack>
-
-                            <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
-                                <TextField
+                                    sx={{ flex: 1 }}
                                     select
                                     label="Ano do veículo"
                                     value={form.vehicle_regdate ?? ""}
@@ -351,19 +371,61 @@ export default function VehicleForm({ mode }: { mode: VehicleFormMode }) {
                                         </MenuItem>
                                     ))}
                                 </TextField>
+                            </Stack>
 
-                                <TextField
-                                    select
-                                    label="Versão"
-                                    value={form.vehicle_version ?? ""}
-                                    onChange={(event) => updateSelectField("vehicle_version", Number(event.target.value))}
-                                >
-                                    {versionOptions.map((version: Record<string, unknown>, index: number) => (
-                                        <MenuItem key={String(version.id ?? version.value ?? index)} value={Number(version.id ?? index + 1)}>
-                                            {optionLabel(version, `Versão ${index + 1}`)}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
+                            <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
+                                <Autocomplete<Record<string, unknown>>
+                                    sx={{ flex: 1, minWidth: 0 }}
+                                    options={brandOptions as Record<string, unknown>[]}
+                                    value={selectedOption(brandOptions as Record<string, unknown>[], form.vehicle_brand)}
+                                    inputValue={brandSearch}
+                                    onInputChange={(_, value) => setBrandSearch(value)}
+                                    onChange={(_, value) => {
+                                        const brandId = fieldValue(value as Record<string, unknown> | null);
+                                        updateSelectField("vehicle_brand", brandId);
+                                        updateSelectField("vehicle_model", null);
+                                        updateSelectField("vehicle_version", null);
+                                        setModelSearch("");
+                                        setVersionSearch("");
+                                    }}
+                                    isOptionEqualToValue={(option, value) => fieldValue(option) === fieldValue(value)}
+                                    getOptionKey={(option) => String(fieldValue(option))}
+                                    getOptionLabel={(option) => optionLabel(option)}
+                                    loading={loading}
+                                    renderInput={(params) => <TextField {...params} label="Marca" />}
+                                />
+
+                                <Autocomplete<Record<string, unknown>>
+                                    sx={{ flex: 1, minWidth: 0 }}
+                                    options={modelOptions as Record<string, unknown>[]}
+                                    value={selectedOption(modelOptions as Record<string, unknown>[], form.vehicle_model)}
+                                    inputValue={modelSearch}
+                                    onInputChange={(_, value) => setModelSearch(value)}
+                                    onChange={(_, value) => {
+                                        const modelId = fieldValue(value as Record<string, unknown> | null);
+                                        updateSelectField("vehicle_model", modelId);
+                                        updateSelectField("vehicle_version", null);
+                                        setVersionSearch("");
+                                    }}
+                                    isOptionEqualToValue={(option, value) => fieldValue(option) === fieldValue(value)}
+                                    getOptionLabel={(option) => optionLabel(option)}
+                                    loading={loading || form.vehicle_brand === null}
+                                    disabled={form.vehicle_brand === null}
+                                    renderInput={(params) => <TextField {...params} label="Modelo" />}
+                                />
+                                <Autocomplete<Record<string, unknown>>
+                                    sx={{ flex: 1, minWidth: 0 }}
+                                    options={versionOptions as Record<string, unknown>[]}
+                                    value={selectedOption(versionOptions as Record<string, unknown>[], form.vehicle_version)}
+                                    inputValue={versionSearch}
+                                    onInputChange={(_, value) => setVersionSearch(value)}
+                                    onChange={(_, value) => updateSelectField("vehicle_version", fieldValue(value as Record<string, unknown> | null))}
+                                    isOptionEqualToValue={(option, value) => fieldValue(option) === fieldValue(value)}
+                                    getOptionLabel={(option) => optionLabel(option)}
+                                    loading={loading || form.vehicle_model === null}
+                                    disabled={form.vehicle_model === null}
+                                    renderInput={(params) => <TextField {...params} label="Versão" />}
+                                />
                             </Stack>
 
                             <Stack direction={{ xs: "column", md: "row" }} spacing={2}>

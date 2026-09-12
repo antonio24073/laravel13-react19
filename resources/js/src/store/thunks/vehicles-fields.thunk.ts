@@ -26,3 +26,23 @@ export const getVehiclesFields = () => async (dispatch: Dispatch) => {
         throw error;
     }
 };
+
+export const searchVehicleField = (
+    field: "brands" | "models" | "versions",
+    params: { search?: string; brand_id?: number | null; model_id?: number | null; value?: number | null }
+) => async (dispatch: Dispatch) => {
+    const response = await HttpAuth.get("/vehicles-fields", {
+        params: {
+            field,
+            ...params,
+        },
+    });
+    const payload = response.data ?? {};
+
+    dispatch({
+        type: VEHICLES_FIELDS_SUCCESS,
+        payload,
+    });
+
+    return payload[field] ?? [];
+};

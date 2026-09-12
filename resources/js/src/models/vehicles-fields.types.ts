@@ -7,6 +7,7 @@ export interface VehicleFieldItem {
 }
 
 export interface VehicleFieldsPayload {
+    brands?: VehicleFieldItem[];
     vehicle_types?: VehicleFieldItem[];
     regdate?: VehicleFieldItem[];
     gearbox?: VehicleFieldItem[];

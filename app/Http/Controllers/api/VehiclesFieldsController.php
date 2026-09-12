@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\api;
 
-use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Controller;
+use App\Models\Vehicle_brands;
 use App\Models\Vehicle_car_steerings;
 use App\Models\Vehicle_cubiccms;
 use App\Models\Vehicle_doors;
@@ -17,14 +17,11 @@ use App\Models\Vehicle_motorpowers;
 use App\Models\Vehicle_regdates;
 use App\Models\Vehicle_types;
 use App\Models\Vehicle_versions;
-use App\Models\Vehicles;
 use Illuminate\Http\Request;
 
 class VehiclesFieldsController extends Controller
 {
-
-
-    private function getData()
+    private function getData(): array
     {
         return [
             'vehicle_types' => Vehicle_types::all(),
@@ -38,19 +35,55 @@ class VehiclesFieldsController extends Controller
             'exchange' => Vehicle_exchanges::all(),
             'financial' => Vehicle_financials::all(),
             'cubiccms' => Vehicle_cubiccms::all(),
-            'models' => Vehicle_models::orderBy('label', 'asc')->get(),
-            'versions' => Vehicle_versions::orderBy('label', 'asc')->get(),
         ];
     }
 
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
+        $field = $request->query('field');
+
+        if ($field === null) {
+            return response()->json($this->getData());
+        }
+
+        $validated = $request->validate([
+            'field' => ['required', 'in:brands,models,versions'],
+            'search' => ['nullable', 'string', 'max:100'],
+            'brand_id' => ['nullable', 'integer'],
+            'model_id' => ['nullable', 'integer'],
+            'value' => ['nullable', 'integer'],
+        ]);
+
+        $search = trim($validated['search'] ?? '');
+        $value = $validated['value'] ?? null;
+
+        $query = match ($validated['field']) {
+            'brands' => Vehicle_brands::query(),
+            'models' => Vehicle_models::query()->when(
+                $validated['brand_id'] ?? null,
+                fn ($query, $brandId) => $query->where('brand_id', $brandId)
+            ),
+            'versions' => Vehicle_versions::query()->when(
+                $validated['model_id'] ?? null,
+                fn ($query, $modelId) => $query->where('model_id', $modelId)
+            ),
+        };
+
+        $query->where(function ($query) use ($search, $value) {
+            if ($search !== '') {
+                $query->where('label', 'like', "%{$search}%");
+            }
+
+            if ($value !== null) {
+                $query->orWhere('value', $value);
+            }
+        });
+
         return response()->json([
-            ...$this->getData(),
+            $validated['field'] => $query
+                ->orderBy('label')
+                ->limit(20)
+                ->get(),
         ]);
     }
-
 }

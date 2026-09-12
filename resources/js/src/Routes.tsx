@@ -7,6 +7,9 @@ const Register = lazy(() => import('./view/register'));
 const Vehicles = lazy(() => import('./view/vehicles'));
 const NewVehicle = lazy(() => import('./view/vehicles/new'));
 const EditVehicle = lazy(() => import('./view/vehicles/edit'));
+const Owners = lazy(() => import('./view/owners'));
+const NewOwner = lazy(() => import('./view/owners/new'));
+const EditOwner = lazy(() => import('./view/owners/edit'));
 
 const AppRoutes = () => {
     return <BrowserRouter>
@@ -29,6 +32,8 @@ const AppRoutes = () => {
                             <Link to="/register">Register</Link>
                             <br />
                             <Link to="/vehicles">Vehicles</Link>
+                            <br />
+                            <Link to="/owners">Owners</Link>
                         </>
                     }
                 />
@@ -37,6 +42,9 @@ const AppRoutes = () => {
                 <Route path="/vehicles" element={<Vehicles />} />
                 <Route path="/vehicles/new" element={<NewVehicle />} />
                 <Route path="/vehicles/:id/edit" element={<EditVehicle />} />
+                <Route path="/owners" element={<Owners />} />
+                <Route path="/owners/new" element={<NewOwner />} />
+                <Route path="/owners/:id/edit" element={<EditOwner />} />
             </Routes>
         </Suspense>
     </BrowserRouter>;

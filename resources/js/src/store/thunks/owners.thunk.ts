@@ -11,8 +11,22 @@ import {
     OWNERS_SUCCESS,
 } from "../actions/owners.action";
 
-const errorMessage = (error: any, fallback: string) =>
-    error.response?.data?.message ?? error.response?.data?.errors ?? fallback;
+const errorMessage = (error: any, fallback: string): string => {
+    const message = error.response?.data?.message;
+    if (typeof message === "string") {
+        return message;
+    }
+
+    const errors = error.response?.data?.errors;
+    if (errors && typeof errors === "object") {
+        const firstError = Object.values(errors).flat()[0];
+        if (typeof firstError === "string") {
+            return firstError;
+        }
+    }
+
+    return fallback;
+};
 
 export const getOwners = () => async (dispatch: Dispatch) => {
     dispatch({ type: OWNERS_LOADING });

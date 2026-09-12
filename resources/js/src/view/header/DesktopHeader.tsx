@@ -21,10 +21,10 @@ export default function DesktopHeader() {
                                 </Link>
                             </li>
                             <li className="nav-item">
-                                <button className="nav-link d-flex flex-row" aria-current="page" to="/">
+                                <Link className="nav-link d-flex flex-row" aria-current="page" to="/owners">
                                     <FaUsers className="icon-lg mr-2 mt-1" />
                                     <span>Proprietários</span>
-                                </button>
+                                </Link>
                             </li>
                             <li
                                 className={`nav-item dropdown ${siteOpen ? 'show' : ''}`}

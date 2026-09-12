@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Box, Button, Card, CardContent, Divider, IconButton, Menu, MenuItem, Paper, Stack, Typography } from "@mui/material";
-import { MdDelete, MdDirectionsCar, MdEdit, MdMoreVert, MdOpenInNew } from "react-icons/md";
+import { MdDelete, MdDirectionsCar, MdEdit, MdMoreVert, MdOpenInNew, MdPerson } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import Header from "../header";
 import { rootUrl } from "../../config/App";
@@ -133,6 +133,17 @@ export default function Vehicles() {
         <Menu anchorEl={menuAnchor} open={Boolean(menuAnchor)} onClose={closeMenu}>
           <MenuItem onClick={() => { closeMenu(); navigate(`/vehicles/${selectedVehicleId}`); }}>
             <MdOpenInNew style={{ marginRight: 16 }} /> Visualizar
+          </MenuItem>
+          <MenuItem
+            disabled={!selectedVehicle?.vehicle_owner}
+            onClick={() => {
+              if (selectedVehicle?.vehicle_owner) {
+                closeMenu();
+                navigate(`/owners/${selectedVehicle.vehicle_owner}/edit`);
+              }
+            }}
+          >
+            <MdPerson style={{ marginRight: 16 }} /> Ver proprietário
           </MenuItem>
           <MenuItem onClick={() => { closeMenu(); navigate(`/vehicles/${selectedVehicleId}/edit`); }}>
             <MdEdit style={{ marginRight: 16 }} /> Editar

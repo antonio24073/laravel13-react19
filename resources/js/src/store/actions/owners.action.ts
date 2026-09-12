@@ -3,6 +3,7 @@ import {
     deleteOwner,
     getOwner,
     getOwners,
+    searchOwners,
     updateOwner,
 } from "../thunks/owners.thunk";
 
@@ -17,6 +18,7 @@ export const OWNER_DELETE_SUCCESS = "OWNER_DELETE_SUCCESS";
 
 const ownersAction = {
     getOwners,
+    searchOwners,
     getOwner,
     createOwner,
     updateOwner,

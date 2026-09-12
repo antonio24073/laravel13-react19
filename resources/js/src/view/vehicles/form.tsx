@@ -12,9 +12,11 @@ import {
     Typography,
 } from "@mui/material";
 import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import type { Owner } from "../../models/owners.types";
 import type { Vehicle, VehiclePayload } from "../../models/vehicles.types";
 import { rootUrl } from "../../config/App";
+import ownersAction from "../../store/actions/owners.action";
 import vehiclesAction from "../../store/actions/vehicles.action";
 import vehiclesFieldsAction from "../../store/actions/vehicles-fields.action";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
@@ -44,6 +46,7 @@ const emptyForm: VehicleFormData = {
     vehicle_model: null,
     vehicle_regdate: null,
     vehicle_version: null,
+    vehicle_owner: null,
     vehicle_gearbox: null,
     vehicle_steering: null,
     vehicle_motorpower: null,
@@ -72,6 +75,7 @@ const parseVehicle = (vehicle?: Partial<Vehicle> | null): VehicleFormData => ({
     vehicle_model: vehicle?.vehicle_model ?? null,
     vehicle_regdate: vehicle?.vehicle_regdate ?? null,
     vehicle_version: vehicle?.vehicle_version ?? null,
+    vehicle_owner: vehicle?.vehicle_owner ?? null,
     vehicle_gearbox: vehicle?.vehicle_gearbox ?? null,
     vehicle_steering: vehicle?.vehicle_steering ?? null,
     vehicle_motorpower: vehicle?.vehicle_motorpower ?? null,
@@ -88,6 +92,7 @@ export default function VehicleForm({ mode }: { mode: VehicleFormMode }) {
 
     const selectedVehicle = useAppSelector((state: RootState) => state.vehicles.vehicle);
     const { loading, error } = useAppSelector((state: RootState) => state.vehicles);
+    const { owners, loading: ownersLoading } = useAppSelector((state: RootState) => state.owners);
     const { vehicleFields } = useAppSelector((state: RootState) => state.vehiclesFields);
 
     const brandOptions = vehicleFields.brands ?? [];
@@ -113,6 +118,7 @@ export default function VehicleForm({ mode }: { mode: VehicleFormMode }) {
     const [brandSearch, setBrandSearch] = useState("");
     const [modelSearch, setModelSearch] = useState("");
     const [versionSearch, setVersionSearch] = useState("");
+    const [ownerSearch, setOwnerSearch] = useState("");
 
     const modelOptions = (vehicleFields.models ?? []).filter((model) =>
         form.vehicle_brand === null || Number(model.brand_id) === form.vehicle_brand
@@ -120,6 +126,9 @@ export default function VehicleForm({ mode }: { mode: VehicleFormMode }) {
     const versionOptions = (vehicleFields.versions ?? []).filter((version) =>
         form.vehicle_model === null || Number(version.model_id) === form.vehicle_model
     );
+
+    const ownerOptions = owners as Owner[];
+    const selectedOwner = ownerOptions.find((owner) => owner.id === form.vehicle_owner) ?? null;
 
     useEffect(() => {
         dispatch(vehiclesFieldsAction.getVehiclesFields() as any);
@@ -169,6 +178,18 @@ export default function VehicleForm({ mode }: { mode: VehicleFormMode }) {
     }, [versionSearch, form.vehicle_model, form.vehicle_version, dispatch]);
 
     useEffect(() => {
+        if (ownerSearch.trim().length < 2 && form.vehicle_owner === null) {
+            return;
+        }
+
+        const timeout = window.setTimeout(() => {
+            void dispatch(ownersAction.searchOwners(ownerSearch, form.vehicle_owner) as any);
+        }, 300);
+
+        return () => window.clearTimeout(timeout);
+    }, [ownerSearch, form.vehicle_owner, dispatch]);
+
+    useEffect(() => {
         if (mode === "edit" && id) {
             dispatch(vehiclesAction.getVehicle(Number(id)) as any);
             return;
@@ -184,6 +205,7 @@ export default function VehicleForm({ mode }: { mode: VehicleFormMode }) {
             const parsedVehicle = parseVehicle(selectedVehicle);
             setForm(parsedVehicle);
             formRef.current = parsedVehicle;
+            setOwnerSearch("");
 
             let savedFeatures: unknown = selectedVehicle.vehicle_features;
             if (typeof savedFeatures === "string") {
@@ -256,6 +278,11 @@ export default function VehicleForm({ mode }: { mode: VehicleFormMode }) {
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+
+        if (ownerSearch.trim().length >= 2 && !selectedOwner) {
+            return;
+        }
+
         setSaving(true);
 
         try {
@@ -371,6 +398,31 @@ export default function VehicleForm({ mode }: { mode: VehicleFormMode }) {
                                         </MenuItem>
                                     ))}
                                 </TextField>
+                                <Autocomplete<Owner>
+                                    sx={{ flex: 1, minWidth: 0 }}
+                                    options={ownerOptions}
+                                    value={selectedOwner}
+                                    inputValue={ownerSearch}
+                                    onInputChange={(_, value) => setOwnerSearch(value)}
+                                    onChange={(_, value) => updateSelectField("vehicle_owner", value?.id ?? null)}
+                                    isOptionEqualToValue={(option, value) => option.id === value.id}
+                                    getOptionKey={(option) => String(option.id)}
+                                    getOptionLabel={(option) => option.name ?? ""}
+                                    loading={ownersLoading}
+                                    noOptionsText="Nenhum proprietário encontrado"
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            label="Proprietário"
+                                            error={ownerSearch.trim().length >= 2 && !selectedOwner && !ownersLoading}
+                                            helperText={ownerSearch.trim().length >= 2 && !selectedOwner && !ownersLoading ? (
+                                                <>
+                                                    Proprietário não encontrado. <Link to="/owners/new">Cadastrar proprietário</Link>
+                                                </>
+                                            ) : undefined}
+                                        />
+                                    )}
+                                />
                             </Stack>
 
                             <Stack direction={{ xs: "column", md: "row" }} spacing={2}>

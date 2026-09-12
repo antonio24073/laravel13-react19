@@ -12,14 +12,27 @@ class OwnersController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $user = AuthController::getUserAuthenticated();
+        $search = trim((string) $request->query('search', ''));
+        $value = $request->integer('value') ?: null;
 
         return response()->json(
             Owners::where('user_id', $user->id)
+                ->when($search !== '' || $value !== null, function ($query) use ($search, $value) {
+                    $query->where(function ($query) use ($search, $value) {
+                        if ($search !== '') {
+                            $query->where('name', 'like', "%{$search}%");
+                        }
+
+                        if ($value !== null) {
+                            $query->orWhere('id', $value);
+                        }
+                    });
+                })
                 ->orderBy('name')
-                ->paginate(12)
+                ->paginate(20)
         );
     }
 

@@ -50,6 +50,33 @@ export const getOwners = () => async (dispatch: Dispatch) => {
     }
 };
 
+export const searchOwners = (search: string, value?: number | null) => async (dispatch: Dispatch) => {
+    dispatch({ type: OWNERS_LOADING });
+
+    try {
+        const response = await HttpAuth.get("/owners", {
+            params: {
+                search,
+                value: value ?? undefined,
+            },
+        });
+
+        dispatch({
+            type: OWNERS_SUCCESS,
+            payload: response.data,
+        });
+
+        return response.data;
+    } catch (error: any) {
+        dispatch({
+            type: OWNERS_ERROR,
+            payload: errorMessage(error, "Erro ao buscar proprietários"),
+        });
+
+        throw error;
+    }
+};
+
 export const getOwner = (id: number) => async (dispatch: Dispatch) => {
     dispatch({ type: OWNERS_LOADING });
 

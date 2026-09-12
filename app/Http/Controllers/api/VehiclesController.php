@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Controller;
 use App\Models\Vehicles;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class VehiclesController extends Controller
 {
@@ -63,6 +64,16 @@ class VehiclesController extends Controller
 
         $vehicle = Vehicles::where('user_id', $user->id)
             ->findOrFail($id);
+
+        $validated = $request->validate([
+            'vehicle_owner' => [
+                'nullable',
+                'integer',
+                Rule::exists('owners', 'id')->where(
+                    fn ($query) => $query->where('user_id', $user->id)
+                ),
+            ],
+        ]);
 
         $vehicle->update(
             $request->except([

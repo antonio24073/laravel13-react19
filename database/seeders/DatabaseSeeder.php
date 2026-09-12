@@ -17,15 +17,8 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::firstOrCreate(
-            ['email' => 'test@example.com'],
-            [
-                'name' => 'Test User',
-                'password' => 'password',
-            ]
-        );
-
         $this->call([
+            UserSeeder::class,
             OwnerSeeder::class,
             VehicleSeeder::class,
         ]);

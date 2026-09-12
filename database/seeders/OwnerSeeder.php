@@ -13,7 +13,7 @@ class OwnerSeeder extends Seeder
      */
     public function run(): void
     {
-        $user = User::where('email', 'test@example.com')->firstOrFail();
+        $user = User::where('email', env('ADMIN_USER_EMAIL'))->firstOrFail();
 
         $owners = [
             ['name' => 'Antonio Augusto', 'email' => 'antonio.augusto@example.com', 'phone' => '(11) 99999-1001', 'phone2' => '(11) 98888-1001', 'phone3' => '(11) 97777-1001', 'type' => 0, 'cpf' => '123.456.789-01', 'rg' => '12.345.678-9', 'cnpj' => null, 'ie' => null, 'zipCode' => '01001-000', 'city' => 'São Paulo', 'uf' => 'SP', 'neighborhood' => 'Sé', 'street' => 'Praça da Sé', 'streetNumber' => '100'],

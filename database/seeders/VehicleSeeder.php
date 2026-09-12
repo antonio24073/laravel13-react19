@@ -14,7 +14,7 @@ class VehicleSeeder extends Seeder
      */
     public function run(): void
     {
-        $user = User::where('email', 'test@example.com')->firstOrFail();
+        $user = User::where('email', env('ADMIN_USER_EMAIL'))->firstOrFail();
         $owners = Owners::where('user_id', $user->id)->orderBy('id')->get();
 
         $vehicles = [

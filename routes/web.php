@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\ImageController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/thumb/{path}/{filename}', [ImageController::class, 'thumb'])
+    ->where('path', '.*');
 
 Route::get('/', function () {
     return view('app');
@@ -9,5 +12,4 @@ Route::get('/', function () {
 
 Route::view('/{any?}', 'app')
     ->where('any', '.*');
-
 

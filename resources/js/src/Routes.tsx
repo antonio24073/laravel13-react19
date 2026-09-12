@@ -5,6 +5,8 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 const Login = lazy(() => import('./view/login'));
 const Register = lazy(() => import('./view/register'));
 const Vehicles = lazy(() => import('./view/vehicles'));
+const NewVehicle = lazy(() => import('./view/vehicles/new'));
+const EditVehicle = lazy(() => import('./view/vehicles/edit'));
 
 const AppRoutes = () => {
     return <BrowserRouter>
@@ -33,6 +35,8 @@ const AppRoutes = () => {
                 <Route path="/register" element={<Register />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/vehicles" element={<Vehicles />} />
+                <Route path="/vehicles/new" element={<NewVehicle />} />
+                <Route path="/vehicles/:id/edit" element={<EditVehicle />} />
             </Routes>
         </Suspense>
     </BrowserRouter>;

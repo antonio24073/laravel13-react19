@@ -5,7 +5,7 @@ import MobileHeader from "./MobileHeader";
 export default function index(props: HeaderProps) {
     return (
         <>
-            {(window.innerWidth < 527) ?
+            {(window.innerWidth < 992) ?
                 <MobileHeader title={props.title}/>
                 :
                 <DesktopHeader />

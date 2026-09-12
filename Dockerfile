@@ -76,6 +76,9 @@ RUN mkdir -p \
         storage \
         bootstrap/cache
 
+RUN addgroup -g 1000 hostgroup \
+    && addgroup www-data hostgroup
+
 USER www-data
 
 EXPOSE 9000

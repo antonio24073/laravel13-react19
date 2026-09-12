@@ -12,13 +12,15 @@ use Illuminate\Support\Facades\Route;
 // })->middleware('auth:api');
 
 Route::post('/login', [AuthAuthController::class, 'login']);
+Route::post('/logout', [AuthAuthController::class, 'logout'])->middleware('auth:api');
 
 Route::post('/register', [AuthAuthController::class, 'store']);
 
-Route::apiResources([
-    'vehicles' => VehiclesController::class,
-    'owners' => OwnersController::class,
-]);
+Route::apiResource('vehicles', VehiclesController::class)
+    ->middleware('auth:api');
+
+Route::apiResource('owners', OwnersController::class)
+    ->middleware('auth:api');
 
 Route::apiResource('vehicles-fields', VehiclesFieldsController::class)
     ->only(['index']);

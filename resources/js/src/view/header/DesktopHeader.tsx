@@ -1,10 +1,26 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaCar, FaUsers, FaLaptop, FaCreditCard, FaWhatsapp, FaSignOutAlt } from 'react-icons/fa'
 import { useState } from "react";
+import { HttpAuth } from "../../config/Http";
+import { logout } from "../../store/actions/login.action";
+import { useAppDispatch } from "../../store/hooks";
 
 export default function DesktopHeader() {
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const [siteOpen, setSiteOpen] = useState(false);
     const [financeiroOpen, setFinanceiroOpen] = useState(false);
+
+    const handleLogout = async () => {
+        try {
+            await HttpAuth.post('/logout');
+        } catch (error) {
+            console.error('Erro ao encerrar sessão:', error);
+        } finally {
+            dispatch(logout());
+            navigate('/login', { replace: true });
+        }
+    };
     return (
         <header>
             <nav className="navbar navbar-expand-lg p-0">
@@ -97,10 +113,10 @@ export default function DesktopHeader() {
                                 </Link>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link d-flex flex-row" aria-current="page" to="/">
+                                <button type="button" className="nav-link d-flex flex-row border-0 bg-transparent" aria-current="page" onClick={() => void handleLogout()}>
                                     <FaSignOutAlt className="icon-lg mr-2 mt-1" />
                                     <span>Sair</span>
-                                </Link>
+                                </button>
                             </li>
                         </ul>
                     </div>

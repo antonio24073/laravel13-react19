@@ -38,6 +38,15 @@ class AuthController extends Controller
         ]);
     }
 
+    public function logout(Request $request)
+    {
+        $request->user()->token()->revoke();
+
+        return response()->json([
+            'message' => 'Logout realizado com sucesso.',
+        ]);
+    }
+
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [

@@ -3,6 +3,7 @@
 use App\Http\Controllers\api\uploads\VehicleUploadController;
 use App\Http\Controllers\api\VehiclesController;
 use App\Http\Controllers\api\VehiclesFieldsController;
+use App\Http\Controllers\api\OwnersController;
 use App\Http\Controllers\Auth\AuthController as AuthAuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -17,6 +18,7 @@ Route::post('/register', [AuthAuthController::class, 'store']);
 
 Route::apiResources([
     'vehicles' => VehiclesController::class,
+    'owners' => OwnersController::class,
 ]);
 
 Route::apiResource('vehicles-fields', VehiclesFieldsController::class)

@@ -11,6 +11,59 @@ type OwnerFormMode = "create" | "edit";
 
 type OwnerFormData = OwnerPayload;
 
+const brazilianStates = [
+    ["AC", "Acre"], ["AL", "Alagoas"], ["AP", "Amapá"], ["AM", "Amazonas"],
+    ["BA", "Bahia"], ["CE", "Ceará"], ["DF", "Distrito Federal"], ["ES", "Espírito Santo"],
+    ["GO", "Goiás"], ["MA", "Maranhão"], ["MT", "Mato Grosso"], ["MS", "Mato Grosso do Sul"],
+    ["MG", "Minas Gerais"], ["PA", "Pará"], ["PB", "Paraíba"], ["PR", "Paraná"],
+    ["PE", "Pernambuco"], ["PI", "Piauí"], ["RJ", "Rio de Janeiro"], ["RN", "Rio Grande do Norte"],
+    ["RS", "Rio Grande do Sul"], ["RO", "Rondônia"], ["RR", "Roraima"], ["SC", "Santa Catarina"],
+    ["SP", "São Paulo"], ["SE", "Sergipe"], ["TO", "Tocantins"],
+] as const;
+
+const onlyDigits = (value: string, limit: number) => value.replace(/\D/g, "").slice(0, limit);
+
+const formatCpf = (value: string) => {
+    const digits = onlyDigits(value, 11);
+    return digits
+        .replace(/(\d{3})(\d)/, "$1.$2")
+        .replace(/(\d{3})(\d)/, "$1.$2")
+        .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+};
+
+const formatRg = (value: string) => {
+    const digits = onlyDigits(value, 9);
+    return digits
+        .replace(/(\d{2})(\d)/, "$1.$2")
+        .replace(/(\d{3})(\d)/, "$1.$2")
+        .replace(/(\d{3})(\d)$/, "$1-$2");
+};
+
+const formatCnpj = (value: string) => {
+    const digits = onlyDigits(value, 14);
+    return digits
+        .replace(/(\d{2})(\d)/, "$1.$2")
+        .replace(/(\d{3})(\d)/, "$1.$2")
+        .replace(/(\d{3})(\d)/, "$1/$2")
+        .replace(/(\d{4})(\d{1,2})$/, "$1-$2");
+};
+
+const formatPhone = (value: string) => {
+    const digits = onlyDigits(value, 11);
+    return digits
+        .replace(/(\d{2})(\d)/, "($1) $2")
+        .replace(/(\d{5})(\d{1,4})$/, "$1-$2");
+};
+
+const formatCep = (value: string) => onlyDigits(value, 8).replace(/(\d{5})(\d{1,3})$/, "$1-$2");
+const formatIe = (value: string) => {
+    const digits = onlyDigits(value, 9);
+    return digits
+        .replace(/(\d{2})(\d)/, "$1.$2")
+        .replace(/(\d{3})(\d)/, "$1.$2")
+        .replace(/(\d{3})(\d)$/, "$1-$2");
+};
+
 const emptyForm: OwnerFormData = {
     name: "",
     birth: "",
@@ -65,6 +118,15 @@ export default function OwnerForm({ mode }: { mode: OwnerFormMode }) {
         }));
     };
 
+    const handleMaskedChange = (field: keyof OwnerFormData, formatter: (value: string) => string) => (
+        event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
+        setForm((current) => ({
+            ...current,
+            [field]: formatter(event.target.value),
+        }));
+    };
+
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setSaving(true);
@@ -113,27 +175,31 @@ export default function OwnerForm({ mode }: { mode: OwnerFormMode }) {
                                     <MenuItem value={0}>Pessoa física</MenuItem>
                                     <MenuItem value={1}>Pessoa jurídica</MenuItem>
                                 </TextField>
-                                <TextField sx={{ flex: 1 }} label="CPF" value={form.cpf ?? ""} onChange={handleChange("cpf")} />
-                                <TextField sx={{ flex: 1 }} label="RG" value={form.rg ?? ""} onChange={handleChange("rg")} />
+                                <TextField sx={{ flex: 1 }} label="CPF" value={form.cpf ?? ""} onChange={handleMaskedChange("cpf", formatCpf)} inputProps={{ inputMode: "numeric", maxLength: 14, pattern: "\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}" }} />
+                                <TextField sx={{ flex: 1 }} label="RG" value={form.rg ?? ""} onChange={handleMaskedChange("rg", formatRg)} inputProps={{ inputMode: "numeric", maxLength: 12, pattern: "\\d{2}\\.\\d{3}\\.\\d{3}-\\d" }} />
                             </Stack>
 
                             <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
-                                <TextField sx={{ flex: 1 }} label="CNPJ" value={form.cnpj ?? ""} onChange={handleChange("cnpj")} />
-                                <TextField sx={{ flex: 1 }} label="Inscrição estadual" value={form.ie ?? ""} onChange={handleChange("ie")} />
-                                <TextField sx={{ flex: 1 }} label="E-mail" type="email" value={form.email ?? ""} onChange={handleChange("email")} />
+                                <TextField sx={{ flex: 1 }} label="CNPJ" value={form.cnpj ?? ""} onChange={handleMaskedChange("cnpj", formatCnpj)} inputProps={{ inputMode: "numeric", maxLength: 18, pattern: "\\d{2}\\.\\d{3}\\.\\d{3}/\\d{4}-\\d{2}" }} />
+                                <TextField sx={{ flex: 1 }} label="Inscrição estadual" value={form.ie ?? ""} onChange={handleMaskedChange("ie", formatIe)} inputProps={{ inputMode: "numeric", maxLength: 12, pattern: "\\d{2}\\.\\d{3}\\.\\d{3}-\\d" }} />
+                                <TextField sx={{ flex: 1 }} label="E-mail" type="email" value={form.email ?? ""} onChange={handleChange("email")} inputProps={{ maxLength: 255 }} />
                             </Stack>
 
                             <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
-                                <TextField sx={{ flex: 1 }} label="Telefone" value={form.phone ?? ""} onChange={handleChange("phone")} required />
-                                <TextField sx={{ flex: 1 }} label="Telefone 2" value={form.phone2 ?? ""} onChange={handleChange("phone2")} />
-                                <TextField sx={{ flex: 1 }} label="Telefone 3" value={form.phone3 ?? ""} onChange={handleChange("phone3")} />
+                                <TextField sx={{ flex: 1 }} label="Telefone" value={form.phone ?? ""} onChange={handleMaskedChange("phone", formatPhone)} required inputProps={{ inputMode: "tel", maxLength: 15, pattern: "\\(\\d{2}\\) \\d{4,5}-\\d{4}" }} />
+                                <TextField sx={{ flex: 1 }} label="Telefone 2" value={form.phone2 ?? ""} onChange={handleMaskedChange("phone2", formatPhone)} inputProps={{ inputMode: "tel", maxLength: 15, pattern: "\\(\\d{2}\\) \\d{4,5}-\\d{4}" }} />
+                                <TextField sx={{ flex: 1 }} label="Telefone 3" value={form.phone3 ?? ""} onChange={handleMaskedChange("phone3", formatPhone)} inputProps={{ inputMode: "tel", maxLength: 15, pattern: "\\(\\d{2}\\) \\d{4,5}-\\d{4}" }} />
                             </Stack>
 
                             <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>Endereço</Typography>
 
                             <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
-                                <TextField sx={{ flex: 1 }} label="CEP" value={form.zipCode ?? ""} onChange={handleChange("zipCode")} />
-                                <TextField sx={{ flex: 1 }} label="UF" value={form.uf ?? ""} onChange={handleChange("uf")} />
+                                <TextField sx={{ flex: 1 }} label="CEP" value={form.zipCode ?? ""} onChange={handleMaskedChange("zipCode", formatCep)} inputProps={{ inputMode: "numeric", maxLength: 9, pattern: "\\d{5}-\\d{3}" }} />
+                                <TextField sx={{ flex: 1 }} label="UF" select value={form.uf ?? ""} onChange={handleChange("uf")}>
+                                    {brazilianStates.map(([acronym, name]) => (
+                                        <MenuItem key={acronym} value={acronym}>{acronym} - {name}</MenuItem>
+                                    ))}
+                                </TextField>
                                 <TextField sx={{ flex: 2 }} label="Cidade" value={form.city ?? ""} onChange={handleChange("city")} />
                             </Stack>
 

@@ -7,6 +7,7 @@ import notifyReducer from './reducers/notify.reducer'
 import registerReducer from './reducers/register.reducer'
 import vehiclesReducer from './reducers/vehicles.reducer'
 import vehiclesFieldsReducer from './reducers/vehicles-fields.reducer'
+import ownersReducer from './reducers/owners.reducer'
 
 export const store = configureStore({
   reducer: {
@@ -18,6 +19,7 @@ export const store = configureStore({
     register: registerReducer,
     vehicles: vehiclesReducer,
     vehiclesFields: vehiclesFieldsReducer,
+    owners: ownersReducer,
   },
 });
 

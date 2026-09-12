@@ -12,10 +12,30 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-
     public static function getUserAuthenticated(): ?User
     {
         return Auth::guard('api')->user();
+    }
+
+    public function login(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required', 'string'],
+        ]);
+
+        $user = User::where('email', $credentials['email'])->first();
+
+        if (! $user || ! Hash::check($credentials['password'], $user->password)) {
+            return response()->json([
+                'message' => 'As credenciais informadas são inválidas.',
+            ], 401);
+        }
+
+        return response()->json([
+            'access_token' => $user->createToken('auth-api')->accessToken,
+            'token_type' => 'Bearer',
+        ]);
     }
 
     public function store(Request $request)
@@ -29,7 +49,7 @@ class AuthController extends Controller
         if ($validator->fails()) {
             return response()->json(
                 [
-                    'errors' => $validator->errors()
+                    'errors' => $validator->errors(),
                 ],
                 400
             );
@@ -61,19 +81,19 @@ class AuthController extends Controller
 
         $date = Carbon::now();
         $user->next_expiration = $date->addDays(7);
-        $delete_account = clone($date);
+        $delete_account = clone $date;
         $user->delete_account = $delete_account->addDays(15);
 
         $user->save();
 
-        if($user->id){
+        if ($user->id) {
             return response()->json([
                 'access_token' => $user->createToken('auth-api')->accessToken,
             ], 200);
         }
 
         return response()->json([
-            'error' => 'Erro ao cadastrar usuário'
+            'error' => 'Erro ao cadastrar usuário',
         ], 400);
     }
 }

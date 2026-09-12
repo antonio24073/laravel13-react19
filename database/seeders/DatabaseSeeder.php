@@ -2,9 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
+use Laravel\Passport\Passport;
 
 class DatabaseSeeder extends Seeder
 {
@@ -21,6 +22,30 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             OwnerSeeder::class,
             VehicleSeeder::class,
+        ]);
+
+        $this->ensurePersonalAccessClient();
+    }
+
+    private function ensurePersonalAccessClient(): void
+    {
+        $client = Passport::client()
+            ->where('provider', 'users')
+            ->where('revoked', false)
+            ->get()
+            ->first(fn ($client) => $client->hasGrantType('personal_access'));
+
+        if ($client) {
+            return;
+        }
+
+        Passport::client()->forceCreate([
+            'name' => 'Auth API Personal Access Client',
+            'secret' => Str::random(40),
+            'provider' => 'users',
+            'redirect_uris' => [],
+            'grant_types' => ['personal_access'],
+            'revoked' => false,
         ]);
     }
 }

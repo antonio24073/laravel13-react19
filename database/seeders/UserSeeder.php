@@ -13,12 +13,14 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        
-       DB::table('users')->insert([
-            'name' => env('ADMIN_USER_NAME'),
-            'email' => env('ADMIN_USER_EMAIL'),
-            'password' => Hash::make(env('ADMIN_USER_PASSWORD')),
-        ]);
+
+        DB::table('users')->updateOrInsert(
+            ['email' => env('ADMIN_USER_EMAIL')],
+            [
+                'name' => env('ADMIN_USER_NAME'),
+                'password' => Hash::make(env('ADMIN_USER_PASSWORD')),
+            ]
+        );
 
     }
 }

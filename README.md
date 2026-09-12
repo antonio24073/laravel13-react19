@@ -26,7 +26,9 @@ Inside container:
 ```bash
 npm i
 php artisan migrate
-php artisan make:seeder UserSeeder
+php artisan make:seeder
+php artisan app:import-vehicles-fields car
+php artisan app:import-vehicles-fields moto
 php artisan passport:client --password
 php artisan passport:client --personal
 ```
